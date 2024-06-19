@@ -23,13 +23,13 @@ const Login = ({navigation}) => {
         <View style={{flex: 1}}>
           <View style={styles.topContainer}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
-                Türkçe(Türkiye)
-              </Text>
-              <Image
+              {/* <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
+                English (United States)
+              </Text> */}
+              {/* <Image
                 source={require('../../../assets/images/down.png')}
                 style={{width: 12, height: 12}}
-              />
+              /> */}
             </View>
             <Image
               style={styles.logo}
@@ -40,7 +40,7 @@ const Login = ({navigation}) => {
           <View style={styles.keyboardView}>
             <TextInput
               theme={{colors: {text: 'white'}}}
-              placeholder="Telefon numarası,e-posta adresi veya kullanıcı adı"
+              placeholder="Phone number, email, or username"
               onChangeText={item => setName(item)}
               placeholderTextColor="grey"
               selectionColor="grey"
@@ -51,7 +51,7 @@ const Login = ({navigation}) => {
 
             <TextInput
               theme={{colors: {text: 'white'}}}
-              placeholder="Şifre"
+              placeholder="Password"
               placeholderTextColor="grey"
               onChangeText={itemP => setPassword(itemP)}
               style={styles.textInput}
@@ -74,24 +74,24 @@ const Login = ({navigation}) => {
                       index: 0,
                       routes: [{name: 'BottomTab'}],
                     })
-                  : Alert.alert('Hatalı şifre veya kullanıcı adı');
+                  : Alert.alert('Incorrect username or password');
               }}
               style={styles.login}
               disabled={name === null && password === null ? true : false}>
-              <Text style={styles.loginText}>Giriş yap</Text>
+              <Text style={styles.loginText}>Log In</Text>
             </TouchableOpacity>
 
             <View style={{alignItems: 'center', padding: 10}}>
               <View style={styles.text}>
                 <Text style={{fontSize: 12, color: 'grey'}}>
-                  Giriş detaylarını mı unuttun?{' '}
+                  Forgot your login details?{' '}
                 </Text>
-                <Text style={styles.help}> Giriş yapmak için yardım al.</Text>
+                <Text style={styles.help}> Get help logging in.</Text>
               </View>
 
               <View style={styles.seperatorStyle}>
                 <View style={styles.seperator} />
-                <Text style={{color: 'grey'}}> YA DA </Text>
+                <Text style={{color: 'grey'}}> OR </Text>
                 <View style={styles.seperator} />
               </View>
 
@@ -103,7 +103,7 @@ const Login = ({navigation}) => {
                   onPress={() => {
                     Linking.openURL('https://www.facebook.com/login/');
                   }}>
-                  <Text style={styles.faceText}>Facebook ile Giriş Yap</Text>
+                  <Text style={styles.faceText}>Log in with Facebook</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -113,9 +113,9 @@ const Login = ({navigation}) => {
             <View style={styles.bottom}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize: 12, color: 'grey', marginTop: 15}}>
-                  Hesabın yok mu?{' '}
+                  Don't have an account?{' '}
                 </Text>
-                <Text style={{...styles.help, marginTop: 15}}> Kaydol.</Text>
+                <Text style={{...styles.help, marginTop: 15}}> Sign up.</Text>
               </View>
 
               <View style={styles.line} />

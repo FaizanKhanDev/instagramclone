@@ -14,7 +14,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const ProfilBar = () => {
+const ProfileBar = () => {
   const bottomSheet = useRef();
   const bottomSheet2 = useRef();
   const navigation = useNavigation();
@@ -46,7 +46,7 @@ const ProfilBar = () => {
           sheetBackgroundColor="#262626">
           <View style={{alignItems: 'center', marginTop: 15}}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
-              Oluştur
+              Create
             </Text>
           </View>
           <View style={styles.line} />
@@ -54,12 +54,12 @@ const ProfilBar = () => {
           <View style={{marginLeft: 15, marginTop: 15}}>
             <View style={styles.sheet2}>
               <Image source={require('../../../assets/images/video.png')} />
-              <Text style={styles.label}>Reels Videosu</Text>
+              <Text style={styles.label}>Reels Video</Text>
             </View>
 
             <View style={styles.sheet2}>
               <Image source={require('../../../assets/images/grid.png')} />
-              <Text style={styles.label}>Gönderi</Text>
+              <Text style={styles.label}>Post</Text>
             </View>
 
             <View style={styles.sheet2}>
@@ -67,14 +67,14 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/stories.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}>Hikaye</Text>
+              <Text style={styles.label}>Story</Text>
             </View>
             <View style={styles.sheet2}>
               <Image
                 source={require('../../../assets/images/highlight-story.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}> Öne Çıkan Hikaye</Text>
+              <Text style={styles.label}>Highlight</Text>
             </View>
 
             <View style={styles.sheet2}>
@@ -82,7 +82,7 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/live.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}> Canlı</Text>
+              <Text style={styles.label}>Live</Text>
             </View>
 
             <View style={styles.sheet2}>
@@ -90,7 +90,7 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/book.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}> Rehber</Text>
+              <Text style={styles.label}>Guide</Text>
             </View>
           </View>
         </BottomSheet>
@@ -108,7 +108,7 @@ const ProfilBar = () => {
                 bottomSheet.current.close();
               }}>
               <Ionicons name="settings-sharp" size={28} color="white" />
-              <Text style={styles.label}>Ayarlar</Text>
+              <Text style={styles.label}>Settings</Text>
             </TouchableOpacity>
 
             <View style={styles.sheet}>
@@ -116,7 +116,7 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/timer.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}>Hareketlerin</Text>
+              <Text style={styles.label}>Your Activity</Text>
             </View>
 
             <View style={styles.sheet}>
@@ -124,7 +124,7 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/time.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}>Arşiv</Text>
+              <Text style={styles.label}>Archive</Text>
             </View>
 
             <View style={styles.sheet}>
@@ -132,17 +132,17 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/qr-code.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}>QR Kodu</Text>
+              <Text style={styles.label}>QR Code</Text>
             </View>
 
             <View style={styles.sheet}>
               <Feather name="bookmark" size={28} color="white" />
-              <Text style={styles.label}>Kaydedilenler</Text>
+              <Text style={styles.label}>Saved</Text>
             </View>
 
             <View style={styles.sheet}>
               <AntDesign name="bars" size={28} color="white" />
-              <Text style={styles.label}>Yakın Arkadaşlar</Text>
+              <Text style={styles.label}>Close Friends</Text>
             </View>
 
             <View style={styles.sheet}>
@@ -150,7 +150,7 @@ const ProfilBar = () => {
                 source={require('../../../assets/images/heart.png')}
                 style={styles.icon}
               />
-              <Text style={styles.label}>COVID-19 Bilgi Merkezi</Text>
+              <Text style={styles.label}>COVID-19 Information Center</Text>
             </View>
           </View>
         </BottomSheet>
@@ -216,4 +216,4 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
 });
-export default ProfilBar;
+export default ProfileBar;

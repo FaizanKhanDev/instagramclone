@@ -1,12 +1,13 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 const defaultImage = require('../../../assets/images/profil.jpg');
-const ProfileHeader = ({route}) => {
+
+const ProfileHeader = ({ route }) => {
   return (
     <View style={styles.container3}>
       <View>
         <Image
-          source={route ? {uri: route.image} : defaultImage}
+          source={route ? { uri: route.image } : defaultImage}
           style={styles.image3}
         />
       </View>
@@ -14,17 +15,17 @@ const ProfileHeader = ({route}) => {
       <View style={styles.numbers}>
         <View style={styles.left}>
           <Text style={styles.numberContainer}>2</Text>
-          <Text style={styles.text}>Gönderi</Text>
+          <Text style={styles.text}>Posts</Text>
         </View>
 
         <View style={styles.mid}>
           <Text style={styles.numberContainer}>404</Text>
-          <Text style={styles.text}>Takipçi</Text>
+          <Text style={styles.text}>Followers</Text>
         </View>
 
         <View style={styles.right}>
           <Text style={styles.numberContainer}>387</Text>
-          <Text style={styles.text}>Takip</Text>
+          <Text style={styles.text}>Following</Text>
         </View>
       </View>
     </View>
@@ -59,11 +60,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 5,
   },
-
   text: {
     color: 'white',
     fontSize: 16,
     alignSelf: 'center',
   },
 });
+
 export default ProfileHeader;
