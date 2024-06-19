@@ -3,7 +3,7 @@ const comment = [
     id: 1,
     image: require('../images/store2.jpg'),
     comment: 'Gerçekten mükemmel',
-    user: 'ezgiceylan',
+    user: 'Ezgi Ceylan',
   },
   {
     id: 2,

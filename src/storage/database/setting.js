@@ -2,52 +2,53 @@ const setting = [
   {
     id: 1,
     icon: require('../images/invite.png'),
-    name: 'Arkadaşları Takip ve Davet Et',
+    name: 'Follow Friends and Invite',
   },
   {
     id: 2,
     icon: require('../images/bell.png'),
-    name: 'Bildirimler',
+    name: 'Notifications',
   },
   {
     id: 3,
     icon: require('../images/padlock.png'),
-    name: 'Gizlilik',
+    name: 'Privacy',
   },
   {
     id: 4,
     icon: require('../images/friend.png'),
-    name: 'Gözetim',
+    name: 'Surveillance',
   },
   {
     id: 5,
     icon: require('../images/security.png'),
-    name: 'Güvenlik',
+    name: 'Security',
   },
   {
     id: 6,
     icon: require('../images/megaphone.png'),
-    name: 'Reklamlar',
+    name: 'Advertisements',
   },
   {
     id: 7,
     icon: require('../images/user.png'),
-    name: 'Hesap',
+    name: 'Account',
   },
   {
     id: 8,
     icon: require('../images/lifesaver.png'),
-    name: 'Yardım',
+    name: 'Help',
   },
   {
     id: 9,
     icon: require('../images/about.png'),
-    name: 'Hakkında',
+    name: 'About',
   },
   {
     id: 10,
     icon: require('../images/color-palette.png'),
-    name: 'Tema',
+    name: 'Theme',
   },
 ];
+
 export default setting;
