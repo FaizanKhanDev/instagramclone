@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import {
   FlatList,
   Image,
@@ -11,7 +11,7 @@ import BottomSheet from 'react-native-gesture-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import send from '../../storage/database/message';
 import data from '../../storage/database/post';
@@ -22,24 +22,25 @@ const Post = () => {
   const [like, setLike] = useState([]);
   const bottomSheet = useRef();
 
-  const checkLike = React.useCallback((currentLike, postName) => {
+  const checkLike = useCallback((currentLike, postName) => {
     return currentLike.find(item => item === postName);
   }, []);
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
       <View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image source={item.image} style={styles.sheetImage} />
           <View>
             <Text style={styles.sheetLabel}>{item.user}</Text>
-            <Text style={{color: '#a2a2a2'}}>{item.username}</Text>
+            <Text style={{ color: '#a2a2a2' }}>{item.username}</Text>
           </View>
         </View>
       </View>
     );
   };
-  const handleFlowPress = React.useCallback(
+
+  const handleFlowPress = useCallback(
     postName => {
       setLike(currentFollow => {
         const isFollowed = checkLike(currentFollow, postName);
@@ -53,35 +54,36 @@ const Post = () => {
     },
     [checkLike],
   );
+
   const navigation = useNavigation();
+
   return (
     <View style={styles.line}>
-      {data.map((data, index) => {
+      {data.map((item, index) => {
         return (
-          <View key={index} style={{marginBottom: 10}}>
+          <View key={index} style={{ marginBottom: 10 }}>
             <View style={styles.top}>
               <View style={styles.topleft}>
-                <Image source={data.image} style={styles.profilImage} />
-                <Text style={styles.title}>{data.postName}</Text>
+                <Image source={item.image} style={styles.profilImage} />
+                <Text style={styles.title}>{item.postName}</Text>
               </View>
 
-              <TouchableOpacity style={{alignSelf: 'center', marginRight: 15}}>
+              <TouchableOpacity style={{ alignSelf: 'center', marginRight: 15 }}>
                 <Feather name="more-vertical" size={20} color="#F5F5F5" />
               </TouchableOpacity>
             </View>
 
-            <View style={{height: 400}}>
-              <Image source={data.postImage} style={styles.ımage} />
+            <View style={{ height: 400 }}>
+              <Image source={item.postImage} style={styles.ımage} />
             </View>
 
             <View style={styles.ıconContainer}>
               <View style={styles.leftIcon}>
-                <TouchableOpacity
-                  onPress={() => handleFlowPress(data.postName)}>
+                <TouchableOpacity onPress={() => handleFlowPress(item.postName)}>
                   <AntDesign
-                    name={checkLike(like, data.postName) ? 'heart' : 'hearto'}
+                    name={checkLike(like, item.postName) ? 'heart' : 'hearto'}
                     size={24}
-                    color={checkLike(like, data.postName) ? 'red' : 'white'}
+                    color={checkLike(like, item.postName) ? 'red' : 'white'}
                   />
                 </TouchableOpacity>
 
@@ -90,18 +92,20 @@ const Post = () => {
                     navigation.navigate({
                       name: 'Comment',
                       params: {
-                        image: data.image,
-                        user: data.postName,
-                        explanation: data.explanation,
+                        image: item.image,
+                        user: item.postName,
+                        explanation: item.explanation,
                       },
                     })
                   }>
                   <Feather name="message-circle" size={24} color="white" />
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => bottomSheet.current.show()}>
                   <Feather name="send" size={24} color="white" />
                 </TouchableOpacity>
               </View>
+
               <BottomSheet
                 hasDraggableIcon
                 ref={bottomSheet}
@@ -110,7 +114,7 @@ const Post = () => {
                 <View>
                   <View>
                     <TextInput
-                      placeholder="Ara"
+                      placeholder="Search"
                       placeholderTextColor={'#a7a7a7'}
                       style={styles.input}
                     />
@@ -132,16 +136,16 @@ const Post = () => {
                         flexDirection: 'row',
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
                           style={styles.sheetImage}
                           source={require('../../../assets/images/profil.jpg')}
                         />
                         <Text style={styles.sheetLabel}>
-                          Hikayene gönderi ekle
+                          Add to Your Story
                         </Text>
                       </View>
-                      <View style={{justifyContent: 'center'}}>
+                      <View style={{ justifyContent: 'center' }}>
                         <AntDesign
                           name="right"
                           size={18}
@@ -164,25 +168,25 @@ const Post = () => {
                   </View>
                 </View>
               </BottomSheet>
-              <View style={{marginRight: 20}}>
+
+              <View style={{ marginRight: 20 }}>
                 <FontAwesome name="bookmark-o" size={24} color="white" />
               </View>
             </View>
 
             <Text style={styles.likeText}>
-              {checkLike(like, data.postName) ? data.like + 1 : data.like}{' '}
-              beğenme
+              {checkLike(like, item.postName) ? item.like + 1 : item.like} likes
             </Text>
 
-            <View style={{flexDirection: 'row', marginTop: 5}}>
-              <Text style={styles.postName}>{data.postName}</Text>
-              <Text style={{color: 'white', marginTop: 2}}>
+            <View style={{ flexDirection: 'row', marginTop: 5 }}>
+              <Text style={styles.postName}>{item.postName}</Text>
+              <Text style={{ color: 'white', marginTop: 2 }}>
                 {' '}
-                {data.explanation}
+                {item.explanation}
               </Text>
             </View>
 
-            <Text style={styles.comment}>{data.comment}</Text>
+            <Text style={styles.comment}>{item.comment}</Text>
 
             <View
               style={{
@@ -194,10 +198,12 @@ const Post = () => {
                 source={require('../../../assets/images/profil.jpg')}
                 style={styles.profilImage}
               />
-              <Text style={{opacity: 0.8, color: 'grey'}}>Yorum ekle...</Text>
+              <Text style={{ opacity: 0.8, color: 'grey' }}>
+                Add a comment...
+              </Text>
             </View>
 
-            <Text style={styles.time}>{data.time}</Text>
+            <Text style={styles.time}>{item.time}</Text>
           </View>
         );
       })}
