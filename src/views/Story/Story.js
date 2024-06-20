@@ -19,7 +19,7 @@ const Story = ({route}) => {
       <Image style={styles.image} source={route.params.image} />
       <View style={styles.footer}>
         <TextInput
-          placeholder="Mesaj Gönder"
+          placeholder="Send Message"
           placeholderTextColor="white"
           style={styles.input}
         />

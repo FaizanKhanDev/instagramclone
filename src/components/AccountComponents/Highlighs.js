@@ -26,7 +26,8 @@ const Highlighs = () => {
         />
       </TouchableOpacity>
 
-      <Text style={styles.label}>Öne Çıkanlar</Text>
+      <Text style={styles.label}>Highlights</Text>
+
     </View>
   );
 };

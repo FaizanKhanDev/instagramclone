@@ -16,11 +16,11 @@ import message from '../../storage/database/message';
 
 import styles from './styles';
 
-const Message = ({navigation}) => {
+const Message = ({ navigation }) => {
   return (
-    <Container insets={{bottom: true, top: true}}>
+    <Container insets={{ bottom: true, top: true }}>
       <View style={styles.back}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={32} color="white" />
           </TouchableWithoutFeedback>
@@ -30,18 +30,19 @@ const Message = ({navigation}) => {
           name="edit"
           size={24}
           color="white"
-          style={{marginRight: 20}}
+          style={{ marginRight: 20 }}
         />
       </View>
 
       <ScrollView>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <SearchBar />
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Mesajlar</Text>
-          <Text style={styles.title2}>İstekler</Text>
+          <Text style={styles.title}>Messages</Text>
+          <Text style={styles.title2}>Requests</Text>
+
         </View>
 
         <View>
@@ -62,9 +63,9 @@ const Message = ({navigation}) => {
                 }}>
                 <View style={styles.messageContainer}>
                   <Image style={styles.image} source={data.image} />
-                  <View style={{marginLeft: 10}}>
+                  <View style={{ marginLeft: 10 }}>
                     <Text style={styles.user}>{data.user}</Text>
-                    <Text style={{fontSize: 1}}>{data.username}</Text>
+                    <Text style={{ fontSize: 1 }}>{data.username}</Text>
                     <Text style={styles.message}>{data.message}</Text>
                   </View>
                 </View>

@@ -52,7 +52,7 @@ const SingleMessage = ({route, navigation}) => {
             <FontAwesome name="camera" size={24} color="white" />
           </View>
           <TextInput
-            placeholder="Mesaj..."
+            placeholder="Message"
             style={styles.input}
             placeholderTextColor={'#969696'}
             value={messageText}
