@@ -14,8 +14,8 @@ const truePassword = 'faizankhan';
 const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
 
-  const [name, setName] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [name, setName] = useState("faizankhan@gmail.com");
+  const [password, setPassword] = useState("faizankhan");
 
   return (
     <Container insets={{top: true, bottom: true}}>
@@ -25,8 +25,8 @@ const Login = ({navigation}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {/* <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
                 English (United States)
-              </Text> */}
-              {/* <Image
+              </Text>
+              <Image
                 source={require('../../../assets/images/down.png')}
                 style={{width: 12, height: 12}}
               /> */}

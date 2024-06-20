@@ -12,7 +12,8 @@ const Bio = ({route}) => {
       <View style={styles.bioContainer}>
         <Text style={styles.userName}> {route ? route.name : 'CEYLAN'}</Text>
         <Text style={styles.bio}>
-          {route ? route.bio : 'Marmara Üniversitesi'}
+          {route ? route.bio : 'Virtual University of Barcelona'}
+
         </Text>
       </View>
 
@@ -26,7 +27,8 @@ const Bio = ({route}) => {
           style={styles.edit}
           onPress={() => navigation.navigate('EditProfile')}>
           <View style={{alignItems: 'center'}}>
-            <Text style={styles.editText}>Profili Düzenle</Text>
+            <Text style={styles.editText}>Edit Profile</Text>
+
           </View>
         </TouchableOpacity>
 
