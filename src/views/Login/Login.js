@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
 import {Linking} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import {TextInput, Menu} from 'react-native-paper';
 
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
@@ -16,12 +16,14 @@ const Login = ({navigation}) => {
 
   const [name, setName] = useState("faizankhan@gmail.com");
   const [password, setPassword] = useState("faizankhan");
+  const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
 
   return (
     <Container insets={{top: true, bottom: true}}>
       <Content>
         <View style={{flex: 1}}>
           <View style={styles.topContainer}>
+            
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {/* <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
                 English (United States)
