@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
-import {Linking} from 'react-native';
-import {TextInput, Menu} from 'react-native-paper';
+import React, { useState } from 'react';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Linking } from 'react-native';
+import { TextInput, Menu } from 'react-native-paper';
 
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
@@ -11,7 +11,7 @@ import styles from './Login.styles';
 const trueEmail = 'faizankhan@gmail.com';
 const truePassword = 'faizankhan';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
 
   const [name, setName] = useState("faizankhan@gmail.com");
@@ -19,12 +19,12 @@ const Login = ({navigation}) => {
   const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
 
   return (
-    <Container insets={{top: true, bottom: true}}>
+    <Container insets={{ top: true, bottom: true }}>
       <Content>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View style={styles.topContainer}>
-            
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {/* <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
                 English (United States)
               </Text>
@@ -41,7 +41,7 @@ const Login = ({navigation}) => {
 
           <View style={styles.keyboardView}>
             <TextInput
-              theme={{colors: {text: 'white'}}}
+              theme={{ colors: { text: 'white' } }}
               placeholder="Phone number, email, or username"
               onChangeText={item => setName(item)}
               placeholderTextColor="grey"
@@ -52,7 +52,7 @@ const Login = ({navigation}) => {
             />
 
             <TextInput
-              theme={{colors: {text: 'white'}}}
+              theme={{ colors: { text: 'white' } }}
               placeholder="Password"
               placeholderTextColor="grey"
               onChangeText={itemP => setPassword(itemP)}
@@ -73,9 +73,9 @@ const Login = ({navigation}) => {
               onPress={() => {
                 trueEmail === name && truePassword === password
                   ? navigation.reset({
-                      index: 0,
-                      routes: [{name: 'BottomTab'}],
-                    })
+                    index: 0,
+                    routes: [{ name: 'BottomTab' }],
+                  })
                   : Alert.alert('Incorrect username or password');
               }}
               style={styles.login}
@@ -83,9 +83,9 @@ const Login = ({navigation}) => {
               <Text style={styles.loginText}>Log In</Text>
             </TouchableOpacity>
 
-            <View style={{alignItems: 'center', padding: 10}}>
+            <View style={{ alignItems: 'center', padding: 10 }}>
               <View style={styles.text}>
-                <Text style={{fontSize: 12, color: 'grey'}}>
+                <Text style={{ fontSize: 12, color: 'grey' }}>
                   Forgot your login details?{' '}
                 </Text>
                 <Text style={styles.help}> Get help logging in.</Text>
@@ -93,7 +93,7 @@ const Login = ({navigation}) => {
 
               <View style={styles.seperatorStyle}>
                 <View style={styles.seperator} />
-                <Text style={{color: 'grey'}}> OR </Text>
+                <Text style={{ color: 'grey' }}> OR </Text>
                 <View style={styles.seperator} />
               </View>
 
@@ -108,16 +108,18 @@ const Login = ({navigation}) => {
                   <Text style={styles.faceText}>Log in with Facebook</Text>
                 </TouchableOpacity>
               </View>
+
+
+             
             </View>
           </View>
-
           <View style={styles.bottomContainer}>
             <View style={styles.bottom}>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize: 12, color: 'grey', marginTop: 15}}>
-                  Don't have an account?{' '}
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ fontSize: 12, color: 'grey', marginTop: 15 }}>
+                  Don't have an account?{'  '}
                 </Text>
-                <Text style={{...styles.help, marginTop: 15}}> Sign up.</Text>
+                <Text style={{ ...styles.help, marginTop: 15 }}> Sign up.</Text>
               </View>
 
               <View style={styles.line} />

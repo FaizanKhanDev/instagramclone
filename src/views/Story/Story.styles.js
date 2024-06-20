@@ -13,6 +13,7 @@ export default StyleSheet.create({
     borderRadius: 50,
     marginLeft: 5,
     width: '82%',
+    color: 'white',
   },
   ıcon: {
     alignItems: 'center',
