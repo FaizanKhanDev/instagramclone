@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Linking } from 'react-native';
 import { TextInput, Menu } from 'react-native-paper';
-
+import { useNavigation } from '@react-navigation/native';
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
 
@@ -13,11 +13,16 @@ const truePassword = 'faizankhan';
 
 const Login = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
-
+  const navigate = useNavigation();
   const [name, setName] = useState("faizankhan@gmail.com");
   const [password, setPassword] = useState("faizankhan");
   const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
 
+  
+  const  navigateToSignup = () => {
+    console.log("navigateToSignup");
+
+  }
   return (
     <Container insets={{ top: true, bottom: true }}>
       <Content>
@@ -110,16 +115,18 @@ const Login = ({ navigation }) => {
               </View>
 
 
-             
+
             </View>
           </View>
           <View style={styles.bottomContainer}>
             <View style={styles.bottom}>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={{ fontSize: 12, color: 'grey', marginTop: 15 }}>
-                  Don't have an account?{'  '}
-                </Text>
-                <Text style={{ ...styles.help, marginTop: 15 }}> Sign up.</Text>
+                  <Text style={{ fontSize: 12, color: 'grey', marginTop: 15 }}>
+                    Don't have an account?{'  '}
+                  </Text>
+                <TouchableOpacity onPress={navigateToSignup}>
+                  <Text style={{ ...styles.help, marginTop: 15 }}> Sign up.</Text>
+                </TouchableOpacity>
               </View>
 
               <View style={styles.line} />

@@ -13,7 +13,7 @@ export default StyleSheet.create({
   logo: {
     height: 40,
     resizeMode: 'contain',
-    marginBottom: 70,
+    marginBottom: 50,
   },
   textInput: {
     backgroundColor: '#3a3a3a',
@@ -81,7 +81,7 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   bottomContainer: {
-    justifyContent: 'flex-end',
-    height: '22%',
+    justifyContent: 'flex-start',
+    height: '15%',
   },
 });
