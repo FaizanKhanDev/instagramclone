@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Container from "../../components/Container/Container";
@@ -7,17 +7,18 @@ import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
 
-const SignUp = () => {
+const OTPVerification = () => {
     const navigate = useNavigation();
     const [otp, setOtp] = useState('');
-
+    const inputs = Array(4).fill(0);
+    const inputRefs = inputs.map((_, index) => useRef(null));
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
 
     const handleSignUp = () => {
-        const correctOTP = '123456'; 
+        const correctOTP = '123456';
 
         if (otp === correctOTP) {
             navigate.navigate('Login');
@@ -43,6 +44,26 @@ const SignUp = () => {
                         <Text style={{ fontSize: 15, fontWeight: '', textAlign: 'center' }}>
                             Please Check Your Email for the OTP we've sent to verify your account.</Text>
                     </View>
+{/* 
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        {inputs.map((_, index) => (
+                            <TextInput
+                                key={index}
+                                ref={inputRefs[index]}
+                                style={{
+                                    borderWidth: 1,
+                                    borderColor: 'grey',
+                                    borderRadius: 5,
+                                    textAlign: 'center',
+                                    marginHorizontal: 5,
+                                    width: 40,
+                                    height: 40, 
+                                }}
+                                keyboardType="numeric"
+                                maxLength={1}
+                            />
+                        ))}
+                    </View> */}
 
                     <View style={styles.keyboardView}>
                         <TextInput
@@ -90,4 +111,4 @@ const SignUp = () => {
     );
 };
 
-export default SignUp;
+export default OTPVerification;
