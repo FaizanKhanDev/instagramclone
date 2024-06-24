@@ -21,6 +21,7 @@ const Login = ({ navigation }) => {
   
   const  navigateToSignup = () => {
     console.log("navigateToSignup");
+    navigation.navigate('SignUp');
 
   }
   return (

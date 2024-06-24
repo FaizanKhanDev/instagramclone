@@ -84,4 +84,13 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
     height: '15%',
   },
+  textcontainer: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 15,
+    textAlign: 'center', 
+  },
 });

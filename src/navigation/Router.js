@@ -8,6 +8,7 @@ import Story from '../views/Story/Story';
 import BottomTab from './BottomTab';
 import EditProfile from './EditProfile';
 import MessageScreen from './MessageScreen';
+import SignUp from "../views/SignUp/SignUp"
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const Router = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="BottomTab" component={BottomTab} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
