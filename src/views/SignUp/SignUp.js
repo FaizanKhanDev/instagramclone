@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
 import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
+import { Checkbox } from 'react-native-paper';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const SignUp = () => {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
+    const [checked, setChecked] = React.useState(true);
 
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,7 +38,6 @@ const SignUp = () => {
             Alert.alert('Passwords do not match');
             return;
         }
-        // Handle the sign-up logic here
         console.log("SignUp:", { name, email, password });
     };
 
@@ -48,19 +48,15 @@ const SignUp = () => {
     return (
         <Container insets={{ top: true, bottom: true }}>
             <Content>
-                <View style={{ flex: 1 }}>
-                    <View style={styles.topContainer}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
-                        </View>
+                <View style={{ flex: 1, justifyContent: 'center', }}>
+                    <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 20, }}>
                         <Image
-                            style={styles.logo}
-                            source={require('../../../assets/images/instagram_text_logo.png')}
+                            style={styles.signUpLogo}
+                            source={{ uri: 'https://i.imgur.com/aVlDXZ9.png' }}
                         />
+                        <Text style={{ fontSize: 15, fontWeight: '', marginTop: 10 }}>Create an Account</Text>
                     </View>
-                    <View style={styles.textcontainer}>
-                        <Text style={styles.text}>Create an account</Text>
-                    </View>
+
 
                     <View style={styles.keyboardView}>
                         <TextInput
@@ -121,24 +117,39 @@ const SignUp = () => {
                         />
                         <TouchableOpacity
                             onPress={handleSignUp}
-                            style={styles.login}
+                            style={[styles.signupButton, { opacity: !name || !email || !password || !confirmPassword ? 0.5 : 1 }]}
                             disabled={!name || !email || !password || !confirmPassword}>
-                            <Text style={styles.loginText}>Sign Up</Text>
+                            <Text style={styles.signupText}>Sign Up</Text>
                         </TouchableOpacity>
 
-                        <View style={{ alignItems: 'center', padding: 10 }}>
-                            <View style={styles.text}>
-                                <Text style={{ fontSize: 12, color: 'grey' }}>
-                                    Already have an account?{' '}
-                                </Text>
-                                <TouchableOpacity onPress={navigateToLogin}>
-                                    <Text style={styles.help}>Log in.</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ marginTop: 20 }}>
-                                <Text style={{ fontSize: 12, color: 'grey' }}>
-                                    By signing up, you agree to our Terms, Data Policy and Cookies Policy.
-                                </Text>
+                        <View style={{ alignItems: 'center', padding: 20 }}>
+
+                            <TouchableWithoutFeedback onPress={() => setChecked(!checked)}>
+                                <View style={{ marginTop: 20, flexDirection: 'row', alignItems: 'center' }}>
+                                    <Checkbox
+                                        status={checked ? 'checked' : 'unchecked'}
+                                        color="#cffa41"
+                                        onPress={() => setChecked(!checked)}
+                                    />
+                                    <Text style={{ fontSize: 12, color: 'grey', marginLeft: 8 }}>
+                                        By signing up, you agree to our Terms, Data Policy and Cookies Policy.
+                                    </Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+
+                            <View style={styles.signUpBottomContainer}>
+                                <View style={styles.bottom}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={{ fontSize: 12, color: 'grey', marginTop: 5 }}>
+                                            Already have an account?{'  '}
+                                        </Text>
+                                        <TouchableOpacity onPress={navigateToLogin}>
+                                            <Text style={{ ...styles.help, marginTop: 3 }}> Login.</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={styles.line} />
+                                </View>
                             </View>
                         </View>
                     </View>

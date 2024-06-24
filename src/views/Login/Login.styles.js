@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
+import SignUp from '../SignUp/SignUp';
 
 export default StyleSheet.create({
   keyboardView: {
@@ -86,11 +87,43 @@ export default StyleSheet.create({
   },
   textcontainer: {
     flex: 1,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     fontSize: 15,
-    textAlign: 'center', 
+    textAlign: 'center',
+  },
+
+  signUpBottomContainer: {
+    marginTop: 10
+  },
+  signupButton: {
+    width: '84%',
+    height: 50,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#cffa41',
+    backgroundColor: '#cffa41',
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  signupText: {
+    color: '#000',
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  signUpLogo: {
+    width: 200,
+    height: 130,
+    resizeMode: 'contain',
   },
 });
