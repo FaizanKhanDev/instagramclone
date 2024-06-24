@@ -6,9 +6,12 @@ import Content from "../../components/Content/Content";
 import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
+import { signupRequest, signupSuccess, signupFailure } from '../../store/actions/authActions.js';
+import { useDispatch } from 'react-redux';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
+    const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(true);
     const navigate = useNavigation();
     const [name, setName] = useState('');
@@ -38,7 +41,12 @@ const SignUp = () => {
             Alert.alert('Passwords do not match');
             return;
         }
-        console.log("SignUp:", { name, email, password });
+        dispatch(signupRequest());
+        setTimeout(() => {
+            const newUser = { name, email }; 
+            dispatch(signupSuccess(newUser));
+            navigateToLogin();
+        }, 1500);
     };
 
     const navigateToLogin = () => {
