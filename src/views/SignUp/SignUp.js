@@ -6,12 +6,12 @@ import Content from "../../components/Content/Content";
 import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
-import { signupRequest, signupSuccess, signupFailure } from '../../store/actions/authActions.js';
-import { useDispatch } from 'react-redux';
+// import { signupRequest, signupSuccess, signupFailure } from '../../s/tore/actions/authActions.js';
+// import { useDispatch } from 'react-redux';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(true);
     const navigate = useNavigation();
     const [name, setName] = useState('');
@@ -25,6 +25,7 @@ const SignUp = () => {
     };
 
     const handleSignUp = () => {
+        navigate.navigate('Otp');
         if (!name) {
             Alert.alert('Please enter your name');
             return;
@@ -123,10 +124,11 @@ const SignUp = () => {
                                 />
                             }
                         />
+                        {/* disabled={!name || !email z|| !password || !confirmPassword} */}
                         <TouchableOpacity
                             onPress={handleSignUp}
                             style={[styles.signupButton, { opacity: !name || !email || !password || !confirmPassword ? 0.5 : 1 }]}
-                            disabled={!name || !email || !password || !confirmPassword}>
+                            >
                             <Text style={styles.signupText}>Sign Up</Text>
                         </TouchableOpacity>
 

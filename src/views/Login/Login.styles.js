@@ -115,6 +115,7 @@ export default StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
+    fontWeight:800
   },
   signupText: {
     color: '#000',
