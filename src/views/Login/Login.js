@@ -14,8 +14,8 @@ const truePassword = 'faizankhan';
 const Login = ({ navigation }) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
   const navigate = useNavigation();
-  const [name, setName] = useState("faizankhan@gmail.com");
-  const [password, setPassword] = useState("faizankhan");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
 
   
@@ -24,6 +24,18 @@ const Login = ({ navigation }) => {
     navigation.navigate('SignUp');
 
   }
+  const signUp = () => {
+    if(name == "" && password == ""){
+      Alert.alert('Please enter your name and password');
+      return;
+    }
+    trueEmail === name && truePassword === password
+    ? navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }],
+    })
+    : Alert.alert('Incorrect username or password');
+  };
   return (
     <Container insets={{ top: true, bottom: true }}>
       <Content>
@@ -37,11 +49,12 @@ const Login = ({ navigation }) => {
               <Image
                 source={require('../../../assets/images/down.png')}
                 style={{width: 12, height: 12}}
+            style={styles.logo}
               /> */}
             </View>
             <Image
-              style={styles.logo}
-              source={require('../../../assets/images/instagram_text_logo.png')}
+              style={styles.signUpLogo}
+              source={{ uri: 'https://i.imgur.com/aVlDXZ9.png' }}
             />
           </View>
 
@@ -76,14 +89,7 @@ const Login = ({ navigation }) => {
               }
             />
             <TouchableOpacity
-              onPress={() => {
-                trueEmail === name && truePassword === password
-                  ? navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'BottomTab' }],
-                  })
-                  : Alert.alert('Incorrect username or password');
-              }}
+              onPress={signUp}
               style={styles.login}
               disabled={name === null && password === null ? true : false}>
               <Text style={styles.loginText}>Log In</Text>

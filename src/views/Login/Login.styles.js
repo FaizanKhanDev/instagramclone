@@ -27,9 +27,13 @@ export default StyleSheet.create({
     marginBottom: 20,
   },
   login: {
-    backgroundColor: '#0195f7',
+    borderColor: '#cffa41',
+    backgroundColor: '#cffa41',
     width: '84%',
     height: 50,
+    borderWidth: 1,
+
+
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -38,7 +42,7 @@ export default StyleSheet.create({
   loginText: {
     fontSize: 14,
     fontWeight: '400',
-    color: 'white',
+    color: '#333',
   },
   text: {
     flexDirection: 'row',
