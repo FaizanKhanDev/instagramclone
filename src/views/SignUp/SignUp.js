@@ -7,7 +7,7 @@ import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
 // import { signupRequest, signupSuccess, signupFailure } from '../../s/tore/actions/authActions.js';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const SignUp = () => {
     const [email, setEmail] = useState('');
