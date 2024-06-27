@@ -5,54 +5,83 @@ import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
 import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
-import { Checkbox } from 'react-native-paper';
-// import { signupRequest, signupSuccess, signupFailure } from '../../s/tore/actions/authActions.js';
+import { Checkbox, ActivityIndicator } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-
+import { useCreateAccountMutation } from "../../redux/services/auth";
+import SnackBar from "../../components/common/SnackBar";
 const SignUp = () => {
+    const dispatch = useDispatch();
+    const [createAccount, { isLoading, data }] = useCreateAccountMutation();
     const [email, setEmail] = useState('');
-    // const dispatch = useDispatch();
     const [passwordVisible, setPasswordVisible] = useState(true);
     const navigate = useNavigation();
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [checked, setChecked] = React.useState(true);
+    const [snackBarVisible, setSnackBarVisible] = React.useState(true);
+    const [snackBarMessage, setSnackBarMessage] = React.useState('');
 
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
 
-    const handleSignUp = () => {
-        navigate.navigate('Otp');
-        if (!name) {
-            Alert.alert('Please enter your name');
-            return;
+    const handleSignUp = async () => {
+        try {setSnackBarVisible(true);
+                setSnackBarMessage("Account created successfully");
+                setTimeout(() => {
+                    setSnackBarVisible(false);
+                }, 3000);
+                return
+            if(isLoading) {
+                Alert.alert('Please wait...');
+                return;
+            }
+            if (!name) {
+                Alert.alert('Please enter your name');
+                return;
+            }
+            if (!validateEmail(email)) {
+                Alert.alert('Please enter a valid email address');
+                return;
+            }
+            if (password.length < 6) {
+                Alert.alert('Password must be at least 6 characters');
+                return;
+            }
+            if (password !== confirmPassword) {
+                Alert.alert('Passwords do not match');
+                return;
+            }
+            let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
+            if (newUser.status == "success") {
+                setSnackBarVisible(true);
+                setSnackBarMessage("Account created successfully");
+                setTimeout(() => {
+                    setSnackBarVisible(false);
+                }, 3000);
+            } else {
+                setSnackBarVisible(true);
+                setSnackBarMessage(newUser.message);
+                setTimeout(() => {
+                    setSnackBarVisible(false);
+                }, 3000);
+            }
+        } catch (error) {
+            console.log(error);
         }
-        if (!validateEmail(email)) {
-            Alert.alert('Please enter a valid email address');
-            return;
-        }
-        if (password.length < 6) {
-            Alert.alert('Password must be at least 6 characters');
-            return;
-        }
-        if (password !== confirmPassword) {
-            Alert.alert('Passwords do not match');
-            return;
-        }
-        dispatch(signupRequest());
-        setTimeout(() => {
-            const newUser = { name, email }; 
-            dispatch(signupSuccess(newUser));
-            navigateToLogin();
-        }, 1500);
+
     };
 
     const navigateToLogin = () => {
         navigate.navigate('Login');
     };
+
+    const dismissSnackBar = () => {
+        setSnackBarVisible(false);
+      };
+    
 
     return (
         <Container insets={{ top: true, bottom: true }}>
@@ -128,8 +157,12 @@ const SignUp = () => {
                         <TouchableOpacity
                             onPress={handleSignUp}
                             style={[styles.signupButton, { opacity: !name || !email || !password || !confirmPassword ? 0.5 : 1 }]}
-                            >
-                            <Text style={styles.signupText}>Sign Up</Text>
+                        >
+                            {isLoading ? (
+                                <ActivityIndicator size="small" color="white" />
+                            ) : (
+                                <Text style={styles.signupText}>Sign Up</Text>
+                            )}
                         </TouchableOpacity>
 
                         <View style={{ alignItems: 'center', padding: 20 }}>
@@ -165,6 +198,7 @@ const SignUp = () => {
                     </View>
                 </View>
             </Content>
+            <SnackBar  visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
         </Container>
     );
 };
