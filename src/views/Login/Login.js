@@ -58,10 +58,10 @@ const Login = ({ navigation }) => {
       setTimeout(() => {
         setSnackBarVisible(false);
         setSnackBarMessage("");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'BottomTab' }],
-        });
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name: 'BottomTab' }],
+        // });
       }, 1000)
     } else {
       Alert.alert('Incorrect username or password');
