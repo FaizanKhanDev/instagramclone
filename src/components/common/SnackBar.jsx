@@ -15,7 +15,7 @@ const SnackBar = ({ visible, onDismissSnackBar, snackBarMessage }) => {
           label: 'Close',
           onPress: () => {
           },
-          color: 'orange', 
+          color: '#cffa41', 
           style: { backgroundColor: 'transparent' },
         }}>
         {snackBarMessage}

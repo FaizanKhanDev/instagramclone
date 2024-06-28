@@ -9,8 +9,11 @@ import { Checkbox, ActivityIndicator } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { useCreateAccountMutation } from "../../redux/services/auth";
 import SnackBar from "../../components/common/SnackBar";
+import { loginSuccess } from "../../redux/store/actions/authActions";
+import { useSelector } from 'react-redux';
 const SignUp = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth);
     const [createAccount, { isLoading, data }] = useCreateAccountMutation();
     const [email, setEmail] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
@@ -19,7 +22,7 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [checked, setChecked] = React.useState(true);
-    const [snackBarVisible, setSnackBarVisible] = React.useState(true);
+    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState('');
 
     const validateEmail = (email) => {
@@ -28,12 +31,19 @@ const SignUp = () => {
     };
 
     const handleSignUp = async () => {
-        try {setSnackBarVisible(true);
-                setSnackBarMessage("Account created successfully");
-                setTimeout(() => {
-                    setSnackBarVisible(false);
-                }, 3000);
-                return
+        try {
+            console.log("handleSignUp");
+            let myser = {
+                name,
+                email,
+                password,
+                confirm_password: confirmPassword,
+                role: 'USER'
+            }
+            dispatch(loginSuccess(myser));
+            console.log("myser", user);
+            return
+               
             if(isLoading) {
                 Alert.alert('Please wait...');
                 return;
@@ -55,11 +65,14 @@ const SignUp = () => {
                 return;
             }
             let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
+                console.log("newUser", newUser);
             if (newUser.status == "success") {
                 setSnackBarVisible(true);
                 setSnackBarMessage("Account created successfully");
+                dispatch(loginSuccess(newUser.data));
                 setTimeout(() => {
                     setSnackBarVisible(false);
+                    navigate.navigate('Otp');
                 }, 3000);
             } else {
                 setSnackBarVisible(true);
