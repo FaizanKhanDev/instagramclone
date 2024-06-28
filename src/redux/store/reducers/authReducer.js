@@ -20,16 +20,15 @@ const initialState = {
 
 // Reducer function
 const authReducer = (state = initialState, action) => {
-  console.log("authReducer received action:", action);
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log("LOGIN_SUCCESS");
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload,
         error: null,
       };
+
     case LOGIN_FAILURE:
       return {
         ...state,

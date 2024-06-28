@@ -13,6 +13,8 @@ export const authApi = createApi({
 
     // The set of operations that we want to perform against the server.
     endpoints: (builder) => ({
+
+        /* ------- Create Account ------- */
         createAccount: builder.mutation({
             query: (data) => {
                 return {
@@ -22,9 +24,23 @@ export const authApi = createApi({
                 }
             }
         }),
+        /* ------ verify Otp ------ */
+        verifyOtp: builder.mutation({
+            query: (data) => {
+                return {
+                    url: "/verified-email",
+                    method: 'POST',
+                    body: data
+                }
+            }
+        }),
+        /* ------- Login ------- */
+
+
+
     }),
 
 })
 
 // Export hooks for usage in functional components, which are auto-generated based on the defined endpoints
-export const { useCreateAccountMutation } = authApi
+export const { useCreateAccountMutation, useVerifyOtpMutation } = authApi

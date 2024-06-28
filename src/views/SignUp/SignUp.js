@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Container from "../../components/Container/Container";
@@ -13,7 +13,7 @@ import { loginSuccess } from "../../redux/store/actions/authActions";
 import { useSelector } from 'react-redux';
 const SignUp = () => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth);
+    const user = useSelector((state) => state.auth.user);
     const [createAccount, { isLoading, data }] = useCreateAccountMutation();
     const [email, setEmail] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(true);
@@ -30,21 +30,13 @@ const SignUp = () => {
         return re.test(String(email).toLowerCase());
     };
 
+    useEffect(() => {
+       
+      }, [user]);
+
     const handleSignUp = async () => {
         try {
-            console.log("handleSignUp");
-            let myser = {
-                name,
-                email,
-                password,
-                confirm_password: confirmPassword,
-                role: 'USER'
-            }
-            dispatch(loginSuccess(myser));
-            console.log("myser", user);
-            return
-               
-            if(isLoading) {
+            if (isLoading) {
                 Alert.alert('Please wait...');
                 return;
             }
@@ -65,18 +57,20 @@ const SignUp = () => {
                 return;
             }
             let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
-                console.log("newUser", newUser);
-            if (newUser.status == "success") {
+            console.log("newUser", newUser);
+            if (newUser?.data?.status === "success") {
+                dispatch(loginSuccess(newUser.data.data));
                 setSnackBarVisible(true);
                 setSnackBarMessage("Account created successfully");
-                dispatch(loginSuccess(newUser.data));
+                navigate.navigate('Otp');
+
+              
                 setTimeout(() => {
                     setSnackBarVisible(false);
-                    navigate.navigate('Otp');
                 }, 3000);
             } else {
                 setSnackBarVisible(true);
-                setSnackBarMessage(newUser.message);
+                setSnackBarMessage(newUser.error.data.message || "Something went wrong");
                 setTimeout(() => {
                     setSnackBarVisible(false);
                 }, 3000);
@@ -93,8 +87,8 @@ const SignUp = () => {
 
     const dismissSnackBar = () => {
         setSnackBarVisible(false);
-      };
-    
+    };
+
 
     return (
         <Container insets={{ top: true, bottom: true }}>
@@ -211,7 +205,7 @@ const SignUp = () => {
                     </View>
                 </View>
             </Content>
-            <SnackBar  visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
+            <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
         </Container>
     );
 };

@@ -39,3 +39,9 @@ export const signupFailure = (error) => ({
 export const logout = () => ({
   type: LOGOUT,
 });
+
+
+/* ------ Verify OTP ------ */
+export const verifyOtpRequest = () => ({
+  type: VERIFY_OTP_REQUEST,
+})

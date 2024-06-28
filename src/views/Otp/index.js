@@ -18,13 +18,7 @@ const OTPVerification = () => {
     };
 
     const handleSignUp = () => {
-        const correctOTP = '123456';
-
-        if (otp === correctOTP) {
             navigate.navigate('Login');
-        } else {
-            Alert.alert('Invalid OTP', 'Please enter the correct OTP to proceed.');
-        }
     };
 
     const navigateToLogin = () => {
@@ -44,27 +38,6 @@ const OTPVerification = () => {
                         <Text style={{ fontSize: 15, fontWeight: '', textAlign: 'center' }}>
                             Please Check Your Email for the OTP we've sent to verify your account.</Text>
                     </View>
-{/* 
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        {inputs.map((_, index) => (
-                            <TextInput
-                                key={index}
-                                ref={inputRefs[index]}
-                                style={{
-                                    borderWidth: 1,
-                                    borderColor: 'grey',
-                                    borderRadius: 5,
-                                    textAlign: 'center',
-                                    marginHorizontal: 5,
-                                    width: 40,
-                                    height: 40, 
-                                }}
-                                keyboardType="numeric"
-                                maxLength={1}
-                            />
-                        ))}
-                    </View> */}
-
                     <View style={styles.keyboardView}>
                         <TextInput
                             theme={{ colors: { text: 'white' } }}
