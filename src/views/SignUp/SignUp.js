@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Container from "../../components/Container/Container";
@@ -31,8 +31,8 @@ const SignUp = () => {
     };
 
     useEffect(() => {
-       
-      }, [user]);
+
+    }, [user]);
 
     const handleSignUp = async () => {
         try {
@@ -57,16 +57,18 @@ const SignUp = () => {
                 return;
             }
             let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
+            console.log("newUser: ", newUser);
             if (newUser?.data?.status === "success") {
                 dispatch(loginSuccess(newUser.data.data));
                 setSnackBarVisible(true);
                 setSnackBarMessage("Account created successfully");
-                navigate.navigate('Otp');
 
-              
+
                 setTimeout(() => {
+                    navigate.navigate('Otp');
                     setSnackBarVisible(false);
-                }, 3000);
+
+                }, 1000);
             } else {
                 setSnackBarVisible(true);
                 setSnackBarMessage(newUser.error.data.message || "Something went wrong");
@@ -165,7 +167,7 @@ const SignUp = () => {
                             style={[styles.signupButton, { opacity: !name || !email || !password || !confirmPassword ? 0.5 : 1 }]}
                         >
                             {isLoading ? (
-                                <ActivityIndicator size="small" color="white" />
+                                <ActivityIndicator size="small" color="#3a3a3a" />
                             ) : (
                                 <Text style={styles.signupText}>Sign Up</Text>
                             )}

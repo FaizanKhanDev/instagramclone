@@ -50,7 +50,9 @@ const OTPVerification = () => {
         if (verifyOtpResponse?.data?.status === "success") {
             setSnackBarMessage('OTP verified successfully');
             setSnackBarVisible(true);
-            navigateToLogin();
+            setTimeout(() => {
+                navigateToLogin();
+            },2000)
         } else {
             setSnackBarVisible(true);
             setSnackBarMessage(verifyOtpResponse?.error?.data?.message || 'Invalid OTP');
@@ -92,7 +94,7 @@ const OTPVerification = () => {
                         >
                              {
                                         isLoading ? (
-                                            <ActivityIndicator size="small" color="white" />
+                                            <ActivityIndicator size="small" color="#3a3a3a" />
 
                                         ) : <Text style={styles.signupText}>Verify OTP</Text>
                                     }

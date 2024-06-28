@@ -1,40 +1,54 @@
 import React, { useState } from 'react';
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Linking } from 'react-native';
-import { TextInput, Menu } from 'react-native-paper';
+import { TextInput, Menu, ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
-
+import { useLoginMutation } from '../../redux/services/auth';
 import styles from './Login.styles';
+import SnackBar from '../../components/common/SnackBar';
 
 const trueEmail = 'faizankhan@gmail.com';
 const truePassword = 'faizankhan';
 
 const Login = ({ navigation }) => {
+  /* -------- Hooks and variables -------- */
   const [passwordVisible, setPasswordVisible] = useState(true);
   const navigate = useNavigation();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const languages = ['English (United States)', 'Türkçe (Turkey)', 'Español (Spain)', 'Français (France)'];
 
-  
-  const  navigateToSignup = () => {
-    console.log("navigateToSignup");
+  /* -------------- SnackBar --------------- */
+  const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+  const [snackBarMessage, setSnackBarMessage] = React.useState('');
+
+  /* ------------------- Login Mutation ------------------- */
+  let [login, { isLoading, data }] = useLoginMutation();
+
+
+  /* --------- Navigate to SignUp ------------ */
+  const navigateToSignup = () => {
     navigation.navigate('SignUp');
 
   }
-  const signUp = () => {
-    if(name == "" && password == ""){
+  const dismissSnackBar = () => {
+    setSnackBarVisible(false);
+  };
+
+  const signIn = async () => {
+    if (name == "" && password == "") {
       Alert.alert('Please enter your name and password');
       return;
     }
-    trueEmail === name && truePassword === password
-    ? navigation.reset({
-      index: 0,
-      routes: [{ name: 'BottomTab' }],
-    })
-    : Alert.alert('Incorrect username or password');
+    const loginResponse = await login({ identifier: name, password });
+    console.log("loginResponse: ", loginResponse);
+    // trueEmail === name && truePassword === password
+    // ? navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'BottomTab' }],
+    // })
+    // : Alert.alert('Incorrect username or password');
   };
   return (
     <Container insets={{ top: true, bottom: true }}>
@@ -89,10 +103,16 @@ const Login = ({ navigation }) => {
               }
             />
             <TouchableOpacity
-              onPress={signUp}
+              onPress={signIn}
               style={styles.login}
-              disabled={name === null && password === null ? true : false}>
-              <Text style={styles.loginText}>Log In</Text>
+            >
+              {
+                isLoading ? (
+                  <ActivityIndicator color="#3a3a3a" size='small'></ActivityIndicator>
+                ) : <Text style={styles.loginText}>Log In</Text>
+              }
+
+              {/* disabled={name === null && password === null ? true : false} */}
             </TouchableOpacity>
 
             <View style={{ alignItems: 'center', padding: 10 }}>
@@ -128,9 +148,9 @@ const Login = ({ navigation }) => {
           <View style={styles.bottomContainer}>
             <View style={styles.bottom}>
               <View style={{ flexDirection: 'row' }}>
-                  <Text style={{ fontSize: 12, color: 'grey', marginTop: 15 }}>
-                    Don't have an account?{'  '}
-                  </Text>
+                <Text style={{ fontSize: 12, color: 'grey', marginTop: 15 }}>
+                  Don't have an account?{'  '}
+                </Text>
                 <TouchableOpacity onPress={navigateToSignup}>
                   <Text style={{ ...styles.help, marginTop: 15 }}> Sign up.</Text>
                 </TouchableOpacity>
@@ -141,6 +161,9 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </Content>
+
+      <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
+
     </Container>
   );
 };
