@@ -57,7 +57,6 @@ const SignUp = () => {
                 return;
             }
             let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
-            console.log("newUser", newUser);
             if (newUser?.data?.status === "success") {
                 dispatch(loginSuccess(newUser.data.data));
                 setSnackBarVisible(true);

@@ -1,24 +1,60 @@
 import React, { useState, useRef } from "react";
 import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, ActivityIndicator } from 'react-native-paper';
 import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
 import styles from '../../views/Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
-import { Checkbox } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { useVerifyOtpMutation } from "../../redux/services/auth";
+import SnackBar from "../../components/common/SnackBar";
+import { useSelector } from 'react-redux';
 
 const OTPVerification = () => {
+    /* ---- useDispatch ---- */
+    const dispatch = useDispatch();
+
+    /* ---- useNavigation ---- */
     const navigate = useNavigation();
-    const [otp, setOtp] = useState('');
-    const inputs = Array(4).fill(0);
-    const inputRefs = inputs.map((_, index) => useRef(null));
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
+    
+    /* ---- user Object ---- */
+    const user = useSelector((state) => state.auth.user);
+
+    /* ---- useVerifyOtpMutation ---- */
+    const [verifyOtp, { isLoading, data }] = useVerifyOtpMutation();
+
+    /* --- snack bar --- */
+    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+    const [snackBarMessage, setSnackBarMessage] = React.useState('');
+
+    /* ---- Dismiss ---- */
+    const dismissSnackBar = () => {
+        setSnackBarVisible(false);
     };
 
-    const handleSignUp = () => {
-            navigate.navigate('Login');
+    /* ---- OTP Verification ---- */
+    const [otp, setOtp] = useState('');
+
+    const handleVerifyOtp = async () => {
+        if (isLoading) {
+            Alert.alert('Please wait...');
+            return;
+        }
+        if (!otp) {
+            Alert.alert('Please enter OTP');
+            return;
+        }
+        let email = user.email;
+        let verifyOtpResponse = await verifyOtp({ email, otp });
+        console.log("verifyOtpResponse: ", verifyOtpResponse);
+        if (verifyOtpResponse?.data?.status === "success") {
+            setSnackBarMessage('OTP verified successfully');
+            setSnackBarVisible(true);
+            navigateToLogin();
+        } else {
+            setSnackBarVisible(true);
+            setSnackBarMessage(verifyOtpResponse?.error?.data?.message || 'Invalid OTP');
+        }
     };
 
     const navigateToLogin = () => {
@@ -45,15 +81,22 @@ const OTPVerification = () => {
                             onChangeText={setOtp}
                             placeholderTextColor="grey"
                             selectionColor="grey"
+                            keyboardType="numeric"
                             style={styles.textInput}
                             activeOutlineColor="grey"
                             activeUnderlineColor="#3a3a3a"
                         />
                         <TouchableOpacity
-                            onPress={handleSignUp}
+                            onPress={handleVerifyOtp}
                             style={[styles.signupButton, { opacity: otp ? 1 : 0.5 }]}
                         >
-                            <Text style={styles.signupText}>Verify OTP</Text>
+                             {
+                                        isLoading ? (
+                                            <ActivityIndicator size="small" color="white" />
+
+                                        ) : <Text style={styles.signupText}>Verify OTP</Text>
+                                    }
+                            
                         </TouchableOpacity>
                     </View>
 
@@ -64,7 +107,8 @@ const OTPVerification = () => {
                                     Didn't receive the OTP?{' '}
                                 </Text>
                                 <TouchableOpacity>
-                                    <Text style={{ ...styles.help, marginTop: 20 }}>Resend OTP</Text>
+                                   <Text style={{ ...styles.help, marginTop: 20 }}>
+                                            Resend OTP</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.line} />
@@ -80,6 +124,7 @@ const OTPVerification = () => {
                     </View>
                 </View>
             </Content>
+            <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
         </Container>
     );
 };
