@@ -6,15 +6,24 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
   LOGOUT,
+  VERIFY_OTP_REQUEST,
+  SET_TOKEN,
 } from './actionTypes';
 // Action creators
 export const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
 
+/* ------ Login ------ */
 export const loginSuccess = (user) => ({
   type: LOGIN_SUCCESS,
   payload: user,
+});
+
+/* ----- SET TOKEN ------ */
+export const setToken = (token) => ({
+  type: SET_TOKEN,
+  payload: token,
 });
 
 export const loginFailure = (error) => ({

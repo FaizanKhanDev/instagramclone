@@ -8,9 +8,10 @@ import Content from '../../components/Content/Content';
 import { useLoginMutation } from '../../redux/services/auth';
 import styles from './Login.styles';
 import SnackBar from '../../components/common/SnackBar';
+import { loginSuccess,setToken } from '../../redux/store/actions/authActions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const trueEmail = 'faizankhan@gmail.com';
-const truePassword = 'faizankhan';
+
 
 const Login = ({ navigation }) => {
   /* -------- Hooks and variables -------- */
@@ -18,6 +19,9 @@ const Login = ({ navigation }) => {
   const navigate = useNavigation();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
+  /* ----------- Dispatch -----------*/
+  const dispatch = useDispatch();
 
   /* -------------- SnackBar --------------- */
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
@@ -32,10 +36,12 @@ const Login = ({ navigation }) => {
     navigation.navigate('SignUp');
 
   }
+  /* --------- Close SnackBar ---------- */
   const dismissSnackBar = () => {
     setSnackBarVisible(false);
   };
 
+  /* --------- Sign In ---------- */
   const signIn = async () => {
     if (name == "" && password == "") {
       Alert.alert('Please enter your name and password');
@@ -43,28 +49,31 @@ const Login = ({ navigation }) => {
     }
     const loginResponse = await login({ identifier: name, password });
     console.log("loginResponse: ", loginResponse);
-    // trueEmail === name && truePassword === password
-    // ? navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'BottomTab' }],
-    // })
-    // : Alert.alert('Incorrect username or password');
+    if (loginResponse?.data?.status === "success") {
+      let { token, user } = loginResponse.data.data
+      dispatch(loginSuccess(user));
+      dispatch(setToken(token));
+      setSnackBarVisible(true);
+      setSnackBarMessage("Login successfully");
+      setTimeout(() => {
+        setSnackBarVisible(false);
+        setSnackBarMessage("");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomTab' }],
+        });
+      }, 1000)
+    } else {
+      Alert.alert('Incorrect username or password');
+      return;
+    }
   };
   return (
     <Container insets={{ top: true, bottom: true }}>
       <Content>
         <View style={{ flex: 1 }}>
           <View style={styles.topContainer}>
-
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {/* <Text style={{color: 'white', opacity: 0.6, fontSize: 14}}>
-                English (United States)
-              </Text>
-              <Image
-                source={require('../../../assets/images/down.png')}
-                style={{width: 12, height: 12}}
-            style={styles.logo}
-              /> */}
             </View>
             <Image
               style={styles.signUpLogo}

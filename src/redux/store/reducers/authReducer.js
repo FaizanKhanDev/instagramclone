@@ -6,7 +6,9 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
   LOGOUT,
+  SET_TOKEN,
 } from '../actions/actionTypes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -14,6 +16,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   error: null,
+  token: null
 };
 
 
@@ -21,6 +24,8 @@ const initialState = {
 // Reducer function
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+
+    /* ------ Login ------ */
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -29,6 +34,18 @@ const authReducer = (state = initialState, action) => {
         error: null,
       };
 
+    /* ------ SET TOKEN ------ */
+    case SET_TOKEN:
+      try { 
+        AsyncStorage.setItem('token', action.payload);
+      } catch (error) {
+        console.log(error);
+      }
+      return {
+        ...state,
+        isAuthenticated: true,
+        token: action.payload,
+      }
     case LOGIN_FAILURE:
       return {
         ...state,
