@@ -36,8 +36,12 @@ const authReducer = (state = initialState, action) => {
 
     /* ------ SET TOKEN ------ */
     case SET_TOKEN:
-      try { 
-        AsyncStorage.setItem('token', action.payload);
+      try {
+        if (action.payload !== undefined && action.payload !== null) {
+          AsyncStorage.setItem('token', action.payload);
+        } else {
+          AsyncStorage.removeItem('token');
+        }
       } catch (error) {
         console.log(error);
       }

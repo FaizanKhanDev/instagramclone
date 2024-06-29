@@ -8,7 +8,7 @@ import Content from '../../components/Content/Content';
 import { useLoginMutation } from '../../redux/services/auth';
 import styles from './Login.styles';
 import SnackBar from '../../components/common/SnackBar';
-import { loginSuccess,setToken } from '../../redux/store/actions/authActions';
+import { loginSuccess, setToken } from '../../redux/store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -48,7 +48,6 @@ const Login = ({ navigation }) => {
       return;
     }
     const loginResponse = await login({ identifier: name, password });
-    console.log("loginResponse: ", loginResponse);
     if (loginResponse?.data?.status === "success") {
       let { token, user } = loginResponse.data.data
       dispatch(loginSuccess(user));
@@ -58,10 +57,10 @@ const Login = ({ navigation }) => {
       setTimeout(() => {
         setSnackBarVisible(false);
         setSnackBarMessage("");
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{ name: 'BottomTab' }],
-        // });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomTab' }],
+        });
       }, 1000)
     } else {
       Alert.alert('Incorrect username or password');
