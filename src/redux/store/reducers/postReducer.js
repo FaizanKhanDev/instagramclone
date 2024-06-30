@@ -29,7 +29,8 @@ const postReducer = (state = initialState, action) => {
                 error: null,
             };
 
-
+        default:
+            return state;
     }
 };
 

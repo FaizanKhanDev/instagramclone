@@ -5,6 +5,8 @@ import Content from "../../components/Content/Content";
 import BottomNavigation from '../../components/common/BottomNavigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from './CreatePostStyles'
+import RNFS from 'react-native-fs';
+
 const CreatePost = ({ route, navigation }) => {
     const { selectedImage } = route.params;
     const [title, setTitle] = useState('');
@@ -18,8 +20,12 @@ const CreatePost = ({ route, navigation }) => {
         setSelectedOption(option);
     };
 
-    const openToSelectPostPrivacy = () => {
+    const openToSelectPostPrivacy = async () => {
+        console.log("openToSelectPostPrivacy: ");
         bottomSheetRef.current.open();
+        const base64Image = await RNFS.readFile(selectedImage.path, 'base64');
+
+        console.log("base64Image: ", base64Image);
     }
 
     useEffect(() => {
