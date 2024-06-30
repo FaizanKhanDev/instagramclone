@@ -40,7 +40,12 @@ const Login = ({ navigation }) => {
   const dismissSnackBar = () => {
     setSnackBarVisible(false);
   };
-
+  const navigateToApp = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }],
+    });
+  }
   /* --------- Sign In ---------- */
   const signIn = async () => {
     if (name == "" && password == "") {
@@ -125,9 +130,11 @@ const Login = ({ navigation }) => {
 
             <View style={{ alignItems: 'center', padding: 10 }}>
               <View style={styles.text}>
-                <Text style={{ fontSize: 12, color: 'grey' }}>
-                  Forgot your login details?{' '}
-                </Text>
+                <TouchableOpacity onPress={() => navigateToApp()}>
+                  <Text style={{ fontSize: 12, color: 'grey' }}>
+                    Forgot your login details?{' '}
+                  </Text>
+                </TouchableOpacity>
                 <Text style={styles.help}> Get help logging in.</Text>
               </View>
 

@@ -10,6 +10,8 @@ import EditProfile from './EditProfile';
 import MessageScreen from './MessageScreen';
 import SignUp from "../views/SignUp/SignUp"
 import Otp from "../views/Otp/index.js"
+import CreatePost from '../views/post/CreatePost.jsx'
+
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
@@ -25,6 +27,7 @@ const Router = () => {
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Comment" component={Comment} />
       <Stack.Screen name="Otp" component={Otp} />
+      <Stack.Screen name="CreatePost" component={CreatePost}></Stack.Screen>
     
       <Stack.Screen
         name="Story"

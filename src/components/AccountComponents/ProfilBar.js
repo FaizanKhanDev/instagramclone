@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -12,12 +12,33 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ProfileBar = () => {
   const bottomSheet = useRef();
   const bottomSheet2 = useRef();
   const navigation = useNavigation();
+
+
+
+
+  const navigateToOpenGallery = async () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      cropperCircleOverlay: false,
+      includeExif: true,
+      mediaType: 'photo',
+    }).then(image => {
+      console.log('Selected image:', image);
+      navigation.navigate('CreatePost', { selectedImage: image });
+
+    }).catch(error => {
+      console.log('ImagePicker Error: ', error);
+    });
+  };
 
   return (
     <SafeAreaView style={styles.body}>
@@ -26,7 +47,7 @@ const ProfileBar = () => {
         <Text style={styles.header}>ezgiceylan</Text>
         <Image
           source={require('../../../assets/images/down.png')}
-          style={{width: 18, height: 18}}
+          style={{ width: 18, height: 18 }}
         />
       </View>
 
@@ -36,7 +57,7 @@ const ProfileBar = () => {
             name="plus-square-o"
             size={28}
             color="white"
-            style={{marginRight: 10}}
+            style={{ marginRight: 10 }}
           />
         </TouchableOpacity>
         <BottomSheet
@@ -44,22 +65,25 @@ const ProfileBar = () => {
           ref={bottomSheet2}
           height={450}
           sheetBackgroundColor="#262626">
-          <View style={{alignItems: 'center', marginTop: 15}}>
-            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+          <View style={{ alignItems: 'center', marginTop: 15 }}>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
               Create
             </Text>
           </View>
           <View style={styles.line} />
 
-          <View style={{marginLeft: 15, marginTop: 15}}>
+          <View style={{ marginLeft: 15, marginTop: 15 }}>
             <View style={styles.sheet2}>
               <Image source={require('../../../assets/images/video.png')} />
               <Text style={styles.label}>Reels Video</Text>
             </View>
 
             <View style={styles.sheet2}>
-              <Image source={require('../../../assets/images/grid.png')} />
-              <Text style={styles.label}>Post</Text>
+              <TouchableOpacity style={styles.sheetTextParent} onPress={navigateToOpenGallery}>
+                <Image source={require('../../../assets/images/grid.png')} />
+                <Text style={styles.label}>Post</Text>
+
+              </TouchableOpacity>
             </View>
 
             <View style={styles.sheet2}>
@@ -100,7 +124,7 @@ const ProfileBar = () => {
           ref={bottomSheet}
           height={400}
           sheetBackgroundColor="#262626">
-          <View style={{marginTop: 15, marginLeft: 5}}>
+          <View style={{ marginTop: 15, marginLeft: 5 }}>
             <TouchableOpacity
               style={styles.sheet}
               onPress={() => {
@@ -214,6 +238,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     paddingLeft: 15,
+  },
+  sheetTextParent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 export default ProfileBar;
