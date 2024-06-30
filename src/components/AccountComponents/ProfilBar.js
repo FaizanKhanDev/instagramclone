@@ -44,11 +44,11 @@ const ProfileBar = () => {
     <SafeAreaView style={styles.body}>
       <View style={styles.left}>
         <Feather name="lock" size={18} color="white" />
-        <Text style={styles.header}>ezgiceylan</Text>
-        <Image
+        <Text style={styles.header}>Faizan Khan</Text>
+        {/* <Image
           source={require('../../../assets/images/down.png')}
           style={{ width: 18, height: 18 }}
-        />
+        /> */}
       </View>
 
       <View style={styles.right}>

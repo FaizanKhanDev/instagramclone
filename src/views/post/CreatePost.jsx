@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, Text, Dimensions, TouchableOpacity, TextInput, Keyboard, KeyboardAvoidingView, Platform, Animated } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Image, StyleSheet, Text, Dimensions, TouchableOpacity, TextInput, Keyboard, KeyboardAvoidingView, Platform, Animated } from 'react-native';
 import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
+import BottomNavigation from '../../components/common/BottomNavigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import styles from './CreatePostStyles'
 const CreatePost = ({ route, navigation }) => {
     const { selectedImage } = route.params;
     const [title, setTitle] = useState('');
     const [keyboardOpened, setKeyboardOpened] = useState(false);
     const { width } = Dimensions.get('window');
     const imageOffset = new Animated.Value(0);
+    const [selectedOption, setSelectedOption] = useState('Public');
+    const bottomSheetRef = useRef();
+
+    const handleOptionChange = (option) => {
+        setSelectedOption(option);
+    };
+
+    const openToSelectPostPrivacy = () => {
+        bottomSheetRef.current.open();
+    }
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -17,8 +28,8 @@ const CreatePost = ({ route, navigation }) => {
             () => {
                 setKeyboardOpened(true);
                 Animated.timing(imageOffset, {
-                    toValue: -100, // Adjust this value based on how much you want the image to float up
-                    duration: 300, // Duration of the animation
+                    toValue: -100,
+                    duration: 300,
                     useNativeDriver: true,
                 }).start();
             }
@@ -43,74 +54,91 @@ const CreatePost = ({ route, navigation }) => {
     }, []);
 
     const handlePost = () => {
-        navigation.navigate('Post', { title, selectedImage });
+        bottomSheetRef.current.open();
     };
+
+    const privacyIcon = (option) => {
+        if (option === 'Public') {
+            return 'globe';
+        } else if (option === 'Only Me') {
+            return 'lock';
+        } else if (option === 'Friends') {
+            return 'users';
+        }
+    }
+
 
     return (
         <Container>
             <Content>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <View style={{
-                        paddingHorizontal: 10,
-                        backgroundColor: '#212121',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        paddingVertical: 20,
-                    }}>
+                    <View style={styles.header}>
                         <Image
-                            style={{ width: 40, height: 20, borderRadius: 20, marginRight: 10 }}
+                            style={styles.backIcon}
                             source={{ uri: 'https://i.imgur.com/6MLlpX7.png' }}
                         />
-                        <Text style={{ fontSize: 20, color: 'white' }}>New Post</Text>
+                        <Text style={styles.headerText}>New Post</Text>
                     </View>
                 </TouchableOpacity>
 
-                <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                >
-                    <Animated.View style={{
-                        flex: keyboardOpened ? 0 : 3,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        transform: [{ translateY: imageOffset }],
-                    }}>
-                        <Image source={{ uri: selectedImage.path }} style={{ width: width, height: 300 }} resizeMode="contain" />
+
+                <View style={styles.privacyOptions}>
+
+                    <View>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#cffa41', marginBottom: 10 }}>
+                            Who can see this?
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <FontAwesome
+                                name={privacyIcon(selectedOption)}
+                                size={24}
+                                style={{ marginRight: 10 }}
+                            />
+                            <Text>{selectedOption}</Text>
+                            <TouchableOpacity onPress={openToSelectPostPrivacy} style={{ position: 'absolute', right: 0 }}>
+                                <Image
+                                    source={require('../../../assets/images/down.png')}
+                                    style={{ width: 18,height: 18 }}
+                                />
+                            </TouchableOpacity>
+
+
+                        </View>
+                    </View>
+                </View>
+
+
+                <KeyboardAvoidingView style={{ flex: 1 }}>
+                    <Animated.View style={[styles.imageContainer,
+                    { transform: [{ translateY: imageOffset }] }]}>
+                        <Image source={{ uri: selectedImage.path }}
+                            style={styles.image} resizeMode="contain" />
                     </Animated.View>
 
-                    <View style={{ width: '100%', backgroundColor: '#212121', paddingVertical: 10 }}>
+                    <View style={styles.captionContainer}>
                         <TextInput
                             placeholder="Write a caption..."
                             value={title}
                             onChangeText={setTitle}
-                            style={{ fontSize: 16, width: '100%', paddingHorizontal: 10, color: 'white' }}
+                            style={styles.captionInput}
+                            placeholderTextColor="gray"
                         />
                     </View>
+
+
                 </KeyboardAvoidingView>
 
                 <TouchableOpacity onPress={handlePost}>
-                    <View style={{
-                        marginTop: 10,
-                        width: '100%',
-                        height: 50,
-                        borderRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: '#cffa41',
-                        flexDirection: 'row',
-                        paddingHorizontal: 20,
-                        paddingVertical: 10,
-                        shadowColor: '#000',
-                        shadowOpacity: 0.1,
-                        shadowRadius: 4,
-                        elevation: 5,
-                    }}>
-                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#000' }}>Share</Text>
+                    <View style={styles.shareButton}>
+                        <Text style={styles.shareButtonText}>Share</Text>
                     </View>
                 </TouchableOpacity>
+
+                <BottomNavigation ref={bottomSheetRef} onOptionSelect={handleOptionChange} />
             </Content>
         </Container>
     );
 };
+
 
 export default CreatePost;
