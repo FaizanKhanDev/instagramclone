@@ -3,7 +3,7 @@ import { Alert, Image, TouchableWithoutFeedback, Text, TouchableOpacity, View } 
 import { TextInput } from 'react-native-paper';
 import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
-import styles from '../../views/Login/Login.styles';
+import styles from '../Login/Login.styles';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox, ActivityIndicator } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -57,7 +57,6 @@ const SignUp = () => {
                 return;
             }
             let newUser = await createAccount({ name, email, password, confirm_password: confirmPassword, role: 'USER' });
-            console.log("newUser: ", newUser);
             if (newUser?.data?.status === "success") {
                 dispatch(loginSuccess(newUser.data.data));
                 setSnackBarVisible(true);
@@ -94,7 +93,7 @@ const SignUp = () => {
     return (
         <Container insets={{ top: true, bottom: true }}>
             <Content>
-                <View style={{ flex: 1, justifyContent: 'center', }}>
+                <View style={{ flex: 1, justifyContent: 'center',backgroundColor:"white" }}>
                     <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 20, }}>
                         <Image
                             style={styles.signUpLogo}
@@ -109,7 +108,7 @@ const SignUp = () => {
                             theme={{ colors: { text: 'white' } }}
                             placeholder="Name"
                             onChangeText={setName}
-                            placeholderTextColor="grey"
+                            placeholderTextColor="white"
                             selectionColor="grey"
                             style={styles.textInput}
                             activeOutlineColor="grey"
@@ -119,7 +118,7 @@ const SignUp = () => {
                             theme={{ colors: { text: 'white' } }}
                             placeholder="Email"
                             onChangeText={setEmail}
-                            placeholderTextColor="grey"
+                            placeholderTextColor="white"
                             selectionColor="grey"
                             style={styles.textInput}
                             activeOutlineColor="grey"
@@ -129,7 +128,7 @@ const SignUp = () => {
                             theme={{ colors: { text: 'white' } }}
                             placeholder="Password"
                             onChangeText={setPassword}
-                            placeholderTextColor="grey"
+                            placeholderTextColor="white"
                             selectionColor="grey"
                             secureTextEntry={passwordVisible}
                             style={styles.textInput}
@@ -137,7 +136,7 @@ const SignUp = () => {
                             activeOutlineColor="#3a3a3a"
                             right={
                                 <TextInput.Icon
-                                    color={'grey'}
+                                    color={'white'}
                                     name={passwordVisible ? 'eye-off' : 'eye'}
                                     onPress={() => setPasswordVisible(!passwordVisible)}
                                 />
@@ -147,7 +146,7 @@ const SignUp = () => {
                             theme={{ colors: { text: 'white' } }}
                             placeholder="Confirm Password"
                             onChangeText={setConfirmPassword}
-                            placeholderTextColor="grey"
+                            placeholderTextColor="white"
                             selectionColor="grey"
                             secureTextEntry={passwordVisible}
                             style={styles.textInput}
@@ -155,7 +154,7 @@ const SignUp = () => {
                             activeOutlineColor="#3a3a3a"
                             right={
                                 <TextInput.Icon
-                                    color={'grey'}
+                                    color={'white'}
                                     name={passwordVisible ? 'eye-off' : 'eye'}
                                     onPress={() => setPasswordVisible(!passwordVisible)}
                                 />

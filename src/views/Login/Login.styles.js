@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import SignUp from '../SignUp/SignUp';
 
 export default StyleSheet.create({
   keyboardView: {
@@ -49,7 +48,7 @@ export default StyleSheet.create({
   },
   help: {
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     fontSize: 12,
   },
   seperator: {

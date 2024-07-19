@@ -69,11 +69,11 @@ const Post = () => {
               </View>
 
               <TouchableOpacity style={{ alignSelf: 'center', marginRight: 15 }}>
-                <Feather name="more-vertical" size={20} color="#F5F5F5" />
+                <Feather name="more-horizontal" size={20} color="black" />
               </TouchableOpacity>
             </View>
 
-            <View style={{ height: 400 }}>
+            <View style={{ height: 350 }}>
               <Image source={item.postImage} style={styles.ımage} />
             </View>
 
@@ -83,7 +83,7 @@ const Post = () => {
                   <AntDesign
                     name={checkLike(like, item.postName) ? 'heart' : 'hearto'}
                     size={24}
-                    color={checkLike(like, item.postName) ? 'red' : 'white'}
+                    color={checkLike(like, item.postName) ? 'red' : 'black'}
                   />
                 </TouchableOpacity>
 
@@ -98,11 +98,11 @@ const Post = () => {
                       },
                     })
                   }>
-                  <Feather name="message-circle" size={24} color="white" />
+                  <Feather name="message-circle" size={24} color="black" />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => bottomSheet.current.show()}>
-                  <Feather name="send" size={24} color="white" />
+                  <Feather name="send" size={24} color="black" />
                 </TouchableOpacity>
               </View>
 
@@ -170,7 +170,7 @@ const Post = () => {
               </BottomSheet>
 
               <View style={{ marginRight: 20 }}>
-                <FontAwesome name="bookmark-o" size={24} color="white" />
+                <FontAwesome name="bookmark-o" size={24} color="black" />
               </View>
             </View>
 
@@ -180,7 +180,7 @@ const Post = () => {
 
             <View style={{ flexDirection: 'row', marginTop: 5 }}>
               <Text style={styles.postName}>{item.postName}</Text>
-              <Text style={{ color: 'white', marginTop: 2 }}>
+              <Text style={{ color: 'black', marginTop: 2 }}>
                 {' '}
                 {item.explanation}
               </Text>

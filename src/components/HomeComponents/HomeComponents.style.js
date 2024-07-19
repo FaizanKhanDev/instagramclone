@@ -26,7 +26,7 @@ export default StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 14,
-    color: 'white',
+    color: 'black',
   },
   ımage: {
     width: '100%',
@@ -49,12 +49,12 @@ export default StyleSheet.create({
     marginLeft: 20,
     marginTop: 10,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
   postName: {
     marginLeft: 20,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     marginTop: 2,
   },
   time: {
@@ -77,17 +77,16 @@ export default StyleSheet.create({
   circle: {
     width: 75,
     height: 75,
-    backgroundColor: 'black',
-    borderWidth: 1.5,
+    borderWidth: 2.5,
     borderRadius: 100,
-    borderColor: '#2E2E2E',
+    borderColor: '#F0FE2A',
     justifyContent: 'center',
     alignItems: 'center',
   },
   myStory: {
     width: 75,
     height: 75,
-    backgroundColor: 'black',
+    backgroundColor: '#F0FE2A',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -109,7 +108,7 @@ export default StyleSheet.create({
   textLabel: {
     textAlign: 'center',
     fontSize: 12,
-    color: 'white',
+    color: 'black',
     marginTop: 5,
   },
   body: {
@@ -157,7 +156,7 @@ export default StyleSheet.create({
     margin: 10,
   },
   sheetLabel: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     fontSize: 13,
   },

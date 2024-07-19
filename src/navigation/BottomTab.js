@@ -16,6 +16,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomTab = () => {
   return (
+    <>
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({focused}) => {
@@ -40,6 +41,9 @@ const BottomTab = () => {
               />
             );
           }
+          // if (route.name === 'StoreScreen') {
+          //   return <Feather name="shopping-bag" size={28} color="white" />;
+          // }
           if (route.name === 'StoreScreen') {
             return <Feather name="shopping-bag" size={28} color="white" />;
           }
@@ -58,10 +62,11 @@ const BottomTab = () => {
       })}>
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Discover" component={Discover} />
       <Tab.Screen name="StoreScreen" component={StoreScreen} />
+      <Tab.Screen name="Discover" component={Discover} />
       <Tab.Screen name="AccountScreen" component={AccountScreen} />
     </Tab.Navigator>
+    </>
   );
 };
 export default BottomTab;

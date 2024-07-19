@@ -48,34 +48,42 @@ const Login = ({ navigation }) => {
   }
   /* --------- Sign In ---------- */
   const signIn = async () => {
-    if (name == "" && password == "") {
-      Alert.alert('Please enter your name and password');
-      return;
-    }
-    const loginResponse = await login({ identifier: name, password });
-    if (loginResponse?.data?.status === "success") {
-      let { token, user } = loginResponse.data.data
-      dispatch(loginSuccess(user));
-      dispatch(setToken(token));
-      setSnackBarVisible(true);
-      setSnackBarMessage("Login successfully");
-      setTimeout(() => {
-        setSnackBarVisible(false);
-        setSnackBarMessage("");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'BottomTab' }],
-        });
-      }, 1000)
-    } else {
-      Alert.alert('Incorrect username or password');
-      return;
-    }
+    // if (name == "" && password == "") {
+    //   Alert.alert('Please enter your name and password');
+    //   return;
+    // }
+    // const loginResponse = await login({ identifier: name, password });
+    // if (loginResponse?.data?.status === "success") {
+    //   let { token, user } = loginResponse.data.data
+    //   dispatch(loginSuccess(user));
+    //   dispatch(setToken(token));
+    //   setSnackBarVisible(true);
+    //   setSnackBarMessage("Login successfully");
+    //   setTimeout(() => {
+    //     setSnackBarVisible(false);
+    //     setSnackBarMessage("");
+    //     navigation.reset({
+    //       index: 0,
+    //       routes: [{ name: 'BottomTab' }],
+    //     });
+    //   }, 1000)
+    // } else {
+    //   Alert.alert('Incorrect username or password');
+    //   return;
+    // }
+    setTimeout(() => {
+      setSnackBarVisible(false);
+      setSnackBarMessage("");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'BottomTab' }],
+      });
+    }, 1000)
   };
   return (
     <Container insets={{ top: true, bottom: true }}>
       <Content>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1,backgroundColor:"white" }}>
           <View style={styles.topContainer}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             </View>
@@ -90,7 +98,7 @@ const Login = ({ navigation }) => {
               theme={{ colors: { text: 'white' } }}
               placeholder="Phone number, email, or username"
               onChangeText={item => setName(item)}
-              placeholderTextColor="grey"
+              placeholderTextColor="white"
               selectionColor="grey"
               style={styles.textInput}
               activeOutlineColor="grey"
@@ -100,7 +108,7 @@ const Login = ({ navigation }) => {
             <TextInput
               theme={{ colors: { text: 'white' } }}
               placeholder="Password"
-              placeholderTextColor="grey"
+              placeholderTextColor="white"
               onChangeText={itemP => setPassword(itemP)}
               style={styles.textInput}
               selectionColor="grey"
@@ -109,7 +117,7 @@ const Login = ({ navigation }) => {
               activeOutlineColor="#3a3a3a"
               right={
                 <TextInput.Icon
-                  color={'grey'}
+                  color={'white'}
                   name={passwordVisible ? 'eye-off' : 'eye'}
                   onPress={() => setPasswordVisible(!passwordVisible)}
                 />

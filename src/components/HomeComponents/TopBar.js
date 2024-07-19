@@ -20,28 +20,26 @@ const TopBar = () => {
 
   return (
     <View style={styles.body}>
-      <StatusBar backgroundColor="black" />
-
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../../assets/images/instagram_text_logo.png')}
-          style={styles.icon}
-        />
-      </View>
-
+      <StatusBar backgroundColor="white" />
+   <Image
+              style={{
+                width: 140,
+                height:50,
+                resizeMode: 'contain',
+              }}
+              source={{ uri: 'https://i.imgur.com/aVlDXZ9.png' }}
+            />
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => openCamera()}>
-          <FontAwesome name="plus-square-o" size={24} color="white" />
+          <FontAwesome name="plus-square-o" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-          <Feather name="heart" size={24} color="white" />
+          <Feather name="heart" size={24} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('MessageScreen')}>
-          <Image
-            source={require('../../../assets/images/messenger.png')}
-            style={{height: 24, width: 24}}
-          />
+        
+           <Feather name="message-circle" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>

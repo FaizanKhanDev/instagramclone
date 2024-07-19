@@ -21,13 +21,21 @@ const initialState = {
 // Reducer function
 const postReducer = (state = initialState, action) => {
     switch (action.type) {
-
         /* ------ Create Post ------ */
-        case CREATE_POST:
-            return {
-                ...state,
-                error: null,
-            };
+            case CREATE_POST:
+                return {
+                  ...state,
+                  isAuthenticated: true,
+                  user: action.payload,
+                  error: null,
+                };
+              case CREATE_POST:
+                return {
+                  ...state,
+                  isAuthenticated: false,
+                  user: null,
+                  error: action.payload,
+                };
 
         default:
             return state;
