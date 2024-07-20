@@ -1,11 +1,18 @@
 import React from 'react';
-import { Image, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
+import { Animated, Image, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
 import Container from '../../components/Container/Container';
 
-const ProfilPost = ({ navigation }) => {
+const ProfilPost = ({ navigation, scrollY }) => {
   return (
     <Container>
-      <ScrollView>
+      <Animated.ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
+      >
         <View style={styles.imageRow}>
           {[...Array(6)].map((_, index) => (
             <TouchableOpacity
@@ -20,12 +27,16 @@ const ProfilPost = ({ navigation }) => {
             </TouchableOpacity>
           ))}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

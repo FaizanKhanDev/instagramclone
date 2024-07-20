@@ -1,17 +1,17 @@
 import React from 'react';
-import {Image} from 'react-native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import ProfilPost from '../views/ProfilPost/ProfilPost';
 import Reels from '../views/ProfilReels/ProfilReels';
 import Tag from '../views/Tag/Tag';
+import { Image, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TopTabNavigator = () => {
+const TopTabNavigator = ({ scrollY }) => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         tabBarIcon: () => {
           if (route.name === 'ProfilPost') {
             return <Image source={require('../../assets/images/grid.png')} />;
@@ -23,16 +23,24 @@ const TopTabNavigator = () => {
             return <Image source={require('../../assets/images/avatar.png')} />;
           }
         },
-        tabBarIndicatorStyle: {backgroundColor: 'white', height: 2},
+        tabBarIndicatorStyle: { backgroundColor: 'white', height: 2 },
         tabBarLabel: '',
         tabBarStyle: {
           backgroundColor: 'black',
         },
-      })}>
-      <Tab.Screen name="ProfilPost" component={ProfilPost} />
-      <Tab.Screen name="ProfilReels" component={Reels} />
-      <Tab.Screen name="Tag" component={Tag} />
+      })}
+    >
+      <Tab.Screen name="ProfilPost">
+        {(props) => <ProfilPost {...props} scrollY={scrollY} />}
+      </Tab.Screen>
+      <Tab.Screen name="ProfilReels">
+        {(props) => <Reels {...props} scrollY={scrollY} />}
+      </Tab.Screen>
+      <Tab.Screen name="Tag">
+        {(props) => <Tag {...props} scrollY={scrollY} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
+
 export default TopTabNavigator;
