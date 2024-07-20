@@ -14,12 +14,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useUploadFileMutation } from '../../redux/services/files';
 
 const ProfileBar = () => {
   const bottomSheet = useRef();
   const bottomSheet2 = useRef();
   const navigation = useNavigation();
 
+    const [uploadFile, { data, loading }] = useUploadFileMutation();
 
 
 
@@ -31,8 +33,13 @@ const ProfileBar = () => {
       cropperCircleOverlay: false,
       includeExif: true,
       mediaType: 'photo',
-    }).then(image => {
+    }).then(async image => {
       console.log('Selected image:', image);
+      let formData = new FormData();
+      formData.append('files', image);
+
+      let response =  await uploadFile(formData);
+      console.log("navigateToOpenGallery: ", JSON.stringify(response));
       navigation.navigate('CreatePost', { selectedImage: image });
 
     }).catch(error => {

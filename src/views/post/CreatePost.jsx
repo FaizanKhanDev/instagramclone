@@ -21,11 +21,11 @@ const CreatePost = ({ route, navigation }) => {
     };
 
     const openToSelectPostPrivacy = async () => {
-        console.log("openToSelectPostPrivacy: ");
         bottomSheetRef.current.open();
         const base64Image = await RNFS.readFile(selectedImage.path, 'base64');
 
         console.log("base64Image: ", base64Image);
+       
     }
 
     useEffect(() => {
@@ -104,7 +104,7 @@ const CreatePost = ({ route, navigation }) => {
                             <TouchableOpacity onPress={openToSelectPostPrivacy} style={{ position: 'absolute', right: 0 }}>
                                 <Image
                                     source={require('../../../assets/images/down.png')}
-                                    style={{ width: 18,height: 18 }}
+                                    style={{ width: 18, height: 18 }}
                                 />
                             </TouchableOpacity>
 
