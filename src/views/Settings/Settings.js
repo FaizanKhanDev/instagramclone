@@ -4,6 +4,7 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,6 +15,7 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import setting from '../../storage/database/setting';
 
 import styles from './Setting.style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingComponent = () => {
   return (
@@ -32,7 +34,10 @@ const SettingComponent = () => {
 
 const Settings = () => {
   const navigation = useNavigation();
-
+  const logout = () => {
+    navigation.navigate('Login');
+    AsyncStorage.clear();
+  }
   return (
     <Container insets={{ top: true }}>
       <View style={styles.topHeader}>
@@ -76,10 +81,13 @@ const Settings = () => {
         <View style={{ marginTop: 30 }}>
           <Text style={styles.entry}>Logins</Text>
           <Text style={styles.blueText}>Add or Change Accounts</Text>
-          <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')}>
+          <TouchableWithoutFeedback onPress={logout}>
             <Text style={styles.blueText}>Log Out from ezgiceylan</Text>
           </TouchableWithoutFeedback>
+          <TouchableOpacity onPress={logout}>
           <Text style={styles.blueText}>Log Out from All Accounts</Text>
+
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </Container>

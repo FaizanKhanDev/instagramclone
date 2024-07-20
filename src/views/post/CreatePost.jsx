@@ -6,14 +6,19 @@ import BottomNavigation from '../../components/common/BottomNavigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from './CreatePostStyles'
 import RNFS from 'react-native-fs';
+import { useCreatePostMutation } from '../../redux/services/post';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreatePost = ({ route, navigation }) => {
     const { selectedImage } = route.params;
+    // const [uploadFile, { data, loading }] = useUploadFileMutation();
+    const [createPost, { loading, error }] = useCreatePostMutation();
     const [title, setTitle] = useState('');
     const [keyboardOpened, setKeyboardOpened] = useState(false);
     const { width } = Dimensions.get('window');
     const imageOffset = new Animated.Value(0);
     const [selectedOption, setSelectedOption] = useState('Public');
+    const [privacyId, setPrivacyId] = useState(1);
     const bottomSheetRef = useRef();
 
     const handleOptionChange = (option) => {
@@ -22,10 +27,7 @@ const CreatePost = ({ route, navigation }) => {
 
     const openToSelectPostPrivacy = async () => {
         bottomSheetRef.current.open();
-        const base64Image = await RNFS.readFile(selectedImage.path, 'base64');
-
-        console.log("base64Image: ", base64Image);
-       
+        // const base64Image = await RNFS.readFile(selectedImage.path, 'base64');
     }
 
     useEffect(() => {
@@ -59,8 +61,26 @@ const CreatePost = ({ route, navigation }) => {
         };
     }, []);
 
-    const handlePost = () => {
-        bottomSheetRef.current.open();
+    const handlePost = async () => {
+        if (selectedOption === 'Public') {
+            setPrivacyId(1);
+        } else if (selectedOption === 'Only Me') {
+            setPrivacyId(2);
+        } else if (selectedOption === 'Friends') {
+            setPrivacyId(3);
+        }
+        const storedToken = await AsyncStorage.getItem('token');
+        let payload = {
+            token: storedToken,
+            title: title,
+            privacyId: privacyId,
+            fileType: "IMAGE",
+            "images": [
+                "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg",
+            ]
+        }
+        let response = await createPost(payload);
+        console.log("response", JSON.stringify(response.data, null, 2));
     };
 
     const privacyIcon = (option) => {

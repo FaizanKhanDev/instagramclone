@@ -21,7 +21,7 @@ const ProfileBar = () => {
   const bottomSheet2 = useRef();
   const navigation = useNavigation();
 
-    const [uploadFile, { data, loading }] = useUploadFileMutation();
+  const [uploadFile, { data, loading }] = useUploadFileMutation();
 
 
 
@@ -37,11 +37,7 @@ const ProfileBar = () => {
       console.log('Selected image:', image);
       let formData = new FormData();
       formData.append('files', image);
-
-      let response =  await uploadFile(formData);
-      console.log("navigateToOpenGallery: ", JSON.stringify(response));
       navigation.navigate('CreatePost', { selectedImage: image });
-
     }).catch(error => {
       console.log('ImagePicker Error: ', error);
     });

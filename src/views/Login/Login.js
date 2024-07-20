@@ -10,7 +10,7 @@ import styles from './Login.styles';
 import SnackBar from '../../components/common/SnackBar';
 import { loginSuccess, setToken } from '../../redux/store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Login = ({ navigation }) => {
