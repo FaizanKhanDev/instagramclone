@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Linking } from 'react-native';
 import { TextInput, Menu, ActivityIndicator } from 'react-native-paper';
@@ -10,10 +10,28 @@ import styles from './Login.styles';
 import SnackBar from '../../components/common/SnackBar';
 import { loginSuccess, setToken } from '../../redux/store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { AsyncStorage } from 'react-native';
 
 
 const Login = ({ navigation }) => {
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('token');
+        if (storedToken) {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'BottomTab' }],
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getToken();
+  }, []);
+
   /* -------- Hooks and variables -------- */
   const [passwordVisible, setPasswordVisible] = useState(true);
   const navigate = useNavigation();
@@ -48,42 +66,35 @@ const Login = ({ navigation }) => {
   }
   /* --------- Sign In ---------- */
   const signIn = async () => {
-    // if (name == "" && password == "") {
-    //   Alert.alert('Please enter your name and password');
-    //   return;
-    // }
-    // const loginResponse = await login({ identifier: name, password });
-    // if (loginResponse?.data?.status === "success") {
-    //   let { token, user } = loginResponse.data.data
-    //   dispatch(loginSuccess(user));
-    //   dispatch(setToken(token));
-    //   setSnackBarVisible(true);
-    //   setSnackBarMessage("Login successfully");
-    //   setTimeout(() => {
-    //     setSnackBarVisible(false);
-    //     setSnackBarMessage("");
-    //     navigation.reset({
-    //       index: 0,
-    //       routes: [{ name: 'BottomTab' }],
-    //     });
-    //   }, 1000)
-    // } else {
-    //   Alert.alert('Incorrect username or password');
-    //   return;
-    // }
-    setTimeout(() => {
-      setSnackBarVisible(false);
-      setSnackBarMessage("");
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'BottomTab' }],
-      });
-    }, 1000)
+    if (name == "" && password == "") {
+      Alert.alert('Please enter your name and password');
+      return;
+    }
+    const loginResponse = await login({ identifier: name, password });
+    if (loginResponse?.data?.status === "success") {
+      let { token, user } = loginResponse.data.data
+      dispatch(loginSuccess(user));
+      dispatch(setToken(token));
+      setSnackBarVisible(true);
+      setSnackBarMessage("Login successfully");
+      setTimeout(() => {
+        setSnackBarVisible(false);
+        setSnackBarMessage("");
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomTab' }],
+        });
+      }, 1000)
+    } else {
+      Alert.alert('Incorrect username or password');
+      return;
+    }
+
   };
   return (
     <Container insets={{ top: true, bottom: true }}>
       <Content>
-        <View style={{ flex: 1,backgroundColor:"white" }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
           <View style={styles.topContainer}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             </View>
