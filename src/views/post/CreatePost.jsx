@@ -73,14 +73,18 @@ const CreatePost = ({ route, navigation }) => {
         let payload = {
             token: storedToken,
             title: title,
+            type:"POST",
             privacyId: privacyId,
             fileType: "IMAGE",
             "images": [
                 "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg",
             ]
         }
-        let response = await createPost(payload);
-        console.log("response", JSON.stringify(response.data, null, 2));
+        console.log("payload: ", JSON.stringify(payload));
+
+        let response = await createPost(payload).then((res) => {
+           console.log("res: ", res);
+        })
     };
 
     const privacyIcon = (option) => {

@@ -62,8 +62,6 @@ const SignUp = () => {
                 dispatch(loginSuccess(newUser.data.data));
                 setSnackBarVisible(true);
                 setSnackBarMessage("Account created successfully");
-
-
                 setTimeout(() => {
                     navigate.navigate('Otp');
                     setSnackBarVisible(false);

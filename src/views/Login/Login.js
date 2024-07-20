@@ -71,6 +71,7 @@ const Login = ({ navigation }) => {
       return;
     }
     const loginResponse = await login({ identifier: name, password });
+    console.log("loginResponse: ", loginResponse);
     if (loginResponse?.data?.status === "success") {
       let { token, user } = loginResponse.data.data
       dispatch(loginSuccess(user));

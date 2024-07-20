@@ -7,7 +7,8 @@ export const postApi = createApi({
     // The base query to request data.
     // RTK Query ships with fetchBaseQuery, which is a lightweight fetch wrapper that automatically handles request headers and response parsing in a manner similar to common libraries like axios.
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://192.168.42.98:8000/api/v1/post',
+        baseUrl: 'http://192.168.42.11:8000/api/v1/post',
+
     }),
 
     // The set of operations that we want to perform against the server.
@@ -58,7 +59,7 @@ export const postApi = createApi({
             query: (id) => {
                 console.log("Delete ID:", id)
                 return {
-                    url: `posts/${id}`,
+                    url: `/delete/${id}`,
                     method: 'DELETE'
                 }
             }
@@ -72,12 +73,12 @@ export const postApi = createApi({
                 const { id, ...data } = updatePostData
                 console.log("Actual Update Post: ", data)
                 return {
-                    url: `posts/${id}`,
+                    url: `/update/${id}`,
                     method: 'PUT',
-                    body: data,
                     headers: {
-                        'Content-type': 'application/json; charset=UTF-8',
-                    }
+                        'Content-type': 'application/json',
+                    },
+                    body: data,
                 }
             }
         }),
