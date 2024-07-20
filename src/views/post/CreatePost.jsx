@@ -8,6 +8,8 @@ import styles from './CreatePostStyles'
 import RNFS from 'react-native-fs';
 import { useCreatePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SnackBar from '../../components/common/SnackBar';
+import { useNavigation } from '@react-navigation/native';
 
 const CreatePost = ({ route, navigation }) => {
     const { selectedImage } = route.params;
@@ -20,6 +22,16 @@ const CreatePost = ({ route, navigation }) => {
     const [selectedOption, setSelectedOption] = useState('Public');
     const [privacyId, setPrivacyId] = useState(1);
     const bottomSheetRef = useRef();
+    const navigate = useNavigation();
+
+
+    /* ---------  SnackBar ---------- */
+    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+    const [snackBarMessage, setSnackBarMessage] = React.useState('');
+    const dismissSnackBar = () => {
+        setSnackBarVisible(false);
+    };
+    /* ---------  SnackBar ---------- */
 
     const handleOptionChange = (option) => {
         setSelectedOption(option);
@@ -73,7 +85,7 @@ const CreatePost = ({ route, navigation }) => {
         let payload = {
             token: storedToken,
             title: title,
-            type:"POST",
+            type: "POST",
             privacyId: privacyId,
             fileType: "IMAGE",
             "images": [
@@ -82,9 +94,17 @@ const CreatePost = ({ route, navigation }) => {
         }
         console.log("payload: ", JSON.stringify(payload));
 
-        let response = await createPost(payload).then((res) => {
-           console.log("res: ", res);
-        })
+        let response = await createPost(payload)
+        if (response.data.status == "success") {
+            setSnackBarVisible(true);
+            setSnackBarMessage("Post created successfully");
+            setTimeout(() => {
+                setSnackBarVisible(false);
+                navigate.navigate('BottomTab', { screen: 'AccountScreen' });
+                setSnackBarMessage("");
+            }, 1500);
+
+        }
     };
 
     const privacyIcon = (option) => {
@@ -166,6 +186,8 @@ const CreatePost = ({ route, navigation }) => {
 
                 <BottomNavigation ref={bottomSheetRef} onOptionSelect={handleOptionChange} />
             </Content>
+
+            <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
         </Container>
     );
 };
