@@ -1,12 +1,12 @@
 import React from 'react';
-import { Animated, Image, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
+import { Image, Text, Animated, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
 import Container from '../../components/Container/Container';
 
-const ProfilPost = ({ navigation, scrollY }) => {
+const ProfilPost = ({ scrollY }) => {
   return (
-    <Container>
-      <Animated.ScrollView
-        contentContainerStyle={styles.scrollViewContent}
+    <Container style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
@@ -14,28 +14,23 @@ const ProfilPost = ({ navigation, scrollY }) => {
         scrollEventThrottle={16}
       >
         <View style={styles.imageRow}>
-          {[...Array(6)].map((_, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.imageContainer}
-              onPress={() => navigation.navigate('SinglePost')}
-            >
-              <Image
-                style={styles.image}
-                source={require('../../storage/images/post.jpg')}
-              />
+          {[...Array(30)].map((_, index) => (
+            <TouchableOpacity key={index} style={styles.imageContainer}>
+              <Image style={styles.image} source={require('../../storage/images/post.jpg')} />
             </TouchableOpacity>
           ))}
         </View>
-      </Animated.ScrollView>
+      </ScrollView>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    flexGrow: 0,
   },
   imageRow: {
     flexDirection: 'row',

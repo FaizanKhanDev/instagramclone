@@ -1,4 +1,4 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Comment from '../views/Comment/Comment';
 import Login from '../views/Login/Login';
 import Story from '../views/Story/Story';
@@ -10,12 +10,11 @@ import Otp from "../views/Otp/index.js"
 import CreatePost from '../views/post/CreatePost.jsx'
 import React, { useEffect, useState } from 'react';
 
-
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
   return (
-    
+
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
@@ -28,7 +27,7 @@ const Router = () => {
       <Stack.Screen name="Comment" component={Comment} />
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="CreatePost" component={CreatePost}></Stack.Screen>
-    
+
       <Stack.Screen
         name="Story"
         component={Story}
