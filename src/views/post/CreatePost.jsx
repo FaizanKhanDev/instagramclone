@@ -4,7 +4,7 @@ import Container from "../../components/Container/Container";
 import Content from "../../components/Content/Content";
 import BottomNavigation from '../../components/common/BottomNavigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import styles from './CreatePostStyles'
+import styles from './CreatePostStyles';
 import RNFS from 'react-native-fs';
 import { useCreatePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,7 +13,6 @@ import { useNavigation } from '@react-navigation/native';
 
 const CreatePost = ({ route, navigation }) => {
     const { selectedImage } = route.params;
-    // const [uploadFile, { data, loading }] = useUploadFileMutation();
     const [createPost, { loading, error }] = useCreatePostMutation();
     const [title, setTitle] = useState('');
     const [keyboardOpened, setKeyboardOpened] = useState(false);
@@ -23,15 +22,15 @@ const CreatePost = ({ route, navigation }) => {
     const [privacyId, setPrivacyId] = useState(1);
     const bottomSheetRef = useRef();
     const navigate = useNavigation();
-
-
-    /* ---------  SnackBar ---------- */
+    
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState('');
+    const [isExpanded, setIsExpanded] = useState(false);
+    const MAX_TITLE_LENGTH = 100;
+
     const dismissSnackBar = () => {
         setSnackBarVisible(false);
     };
-    /* ---------  SnackBar ---------- */
 
     const handleOptionChange = (option) => {
         setSelectedOption(option);
@@ -39,8 +38,7 @@ const CreatePost = ({ route, navigation }) => {
 
     const openToSelectPostPrivacy = async () => {
         bottomSheetRef.current.open();
-        // const base64Image = await RNFS.readFile(selectedImage.path, 'base64');
-    }
+    };
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -89,12 +87,12 @@ const CreatePost = ({ route, navigation }) => {
             privacyId: privacyId,
             fileType: "IMAGE",
             "images": [
-                "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg",
+                "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
             ]
         }
         console.log("payload: ", JSON.stringify(payload));
 
-        let response = await createPost(payload)
+        let response = await createPost(payload);
         if (response.data.status == "success") {
             setSnackBarVisible(true);
             setSnackBarMessage("Post created successfully");
@@ -103,7 +101,6 @@ const CreatePost = ({ route, navigation }) => {
                 navigate.navigate('BottomTab', { screen: 'AccountScreen' });
                 setSnackBarMessage("");
             }, 1500);
-
         }
     };
 
@@ -115,8 +112,18 @@ const CreatePost = ({ route, navigation }) => {
         } else if (option === 'Friends') {
             return 'users';
         }
-    }
+    };
 
+    const getDisplayTitle = (text) => {
+        if (text.length <= MAX_TITLE_LENGTH || isExpanded) {
+            return text;
+        }
+        return text.slice(0, MAX_TITLE_LENGTH) + '...';
+    };
+
+    const handleReadMore = () => {
+        setIsExpanded(prev => !prev);
+    };
 
     return (
         <Container>
@@ -131,9 +138,7 @@ const CreatePost = ({ route, navigation }) => {
                     </View>
                 </TouchableOpacity>
 
-
                 <View style={styles.privacyOptions}>
-
                     <View>
                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#cffa41', marginBottom: 10 }}>
                             Who can see this?
@@ -151,12 +156,9 @@ const CreatePost = ({ route, navigation }) => {
                                     style={{ width: 18, height: 18 }}
                                 />
                             </TouchableOpacity>
-
-
                         </View>
                     </View>
                 </View>
-
 
                 <KeyboardAvoidingView style={{ flex: 1 }}>
                     <Animated.View style={[styles.imageContainer,
@@ -175,7 +177,18 @@ const CreatePost = ({ route, navigation }) => {
                         />
                     </View>
 
-
+                    <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
+                        <Text style={styles.titleText}>
+                            {getDisplayTitle(title)}
+                        </Text>
+                        {title.length > MAX_TITLE_LENGTH && (
+                            <TouchableOpacity onPress={handleReadMore}>
+                                <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 5 }}>
+                                    {isExpanded ? 'Show less' : 'Read more'}
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 </KeyboardAvoidingView>
 
                 <TouchableOpacity onPress={handlePost}>
@@ -187,10 +200,9 @@ const CreatePost = ({ route, navigation }) => {
                 <BottomNavigation ref={bottomSheetRef} onOptionSelect={handleOptionChange} />
             </Content>
 
-            <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar}></SnackBar>
+            <SnackBar visible={snackBarVisible} snackBarMessage={snackBarMessage} onDismissSnackBar={dismissSnackBar} />
         </Container>
     );
 };
-
 
 export default CreatePost;

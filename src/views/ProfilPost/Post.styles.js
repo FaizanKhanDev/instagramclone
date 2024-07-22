@@ -84,4 +84,12 @@ export default StyleSheet.create({
     opacity: 0.8,
     color: 'grey',
   },
+  titleText: {
+    color: 'white',
+    marginTop: 2,
+    marginLeft: 15,
+    width: '40%',
+    flexWrap: 'wrap',
+    textAlign: 'left', 
+  },
 });

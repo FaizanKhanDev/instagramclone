@@ -13,12 +13,11 @@ import { useRoute } from '@react-navigation/native';
 import styles from './Post.styles';
 
 const SinglePost = ({ navigation }) => {
-  /* ----- GET POST ----- */
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
   const [isFilled, setIsFilled] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  /* ----- LIKE POST ----- */
   const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
 
   let [token, setToken] = useState(null);
@@ -61,11 +60,28 @@ const SinglePost = ({ navigation }) => {
     let response = await likePost(payload);
   };
 
+  const getText = (text, maxLength) => {
+    if (isExpanded || text.length <= maxLength) {
+      return text;
+    }
+    return text.slice(0, maxLength) + '... ';
+  };
+
+  const handleReadMore = () => {
+    setIsExpanded(prev => !prev);
+  };
+
   const post = data?.data;
   let user = post?.user;
   let postMetaData = post?.postMetaData;
   let likes = postMetaData?.find((item) => item.key === "LIKES")?.content || 0;
   const images = post?.images || [];
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const options = { month: 'short', day: 'numeric' };
+    return d.toLocaleDateString('en-US', options);
+  }
 
   return (
     <Container insets={{ top: true, bottom: true }}>
@@ -94,13 +110,6 @@ const SinglePost = ({ navigation }) => {
           <View style={{ height: 400 }}>
             {images.map(image => (
               <View key={image.id} style={{ position: 'relative' }}>
-                {imageLoading && (
-                  <ActivityIndicator
-                    size="large"
-                    color="#fff"
-                    style={styles.loadingIndicator}
-                  />
-                )}
                 <Image
                   source={{ uri: image.url }}
                   style={styles.image}
@@ -138,12 +147,14 @@ const SinglePost = ({ navigation }) => {
             {
               data ? (
                 <>
-                  <Text style={styles.postName}>{user?.username}</Text>
-                  <Text style={{ color: 'white', marginTop: 2 }}
-                    numberOfLines={1}
-                    ellipsizeMode="tail">
-                    {data?.data?.title}
+                  <Text style={styles.titleText}>
+                    {getText(data?.data?.title, 20)}
                   </Text>
+                  <TouchableOpacity onPress={handleReadMore}>
+                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 5 }}>
+                      {isExpanded ? 'Show less' : 'Read more'}
+                    </Text>
+                  </TouchableOpacity>
                 </>
               ) :
                 (
@@ -154,12 +165,13 @@ const SinglePost = ({ navigation }) => {
                   </>
                 )
             }
-
           </View>
 
           <Text style={styles.comment}>View all 2 comments</Text>
 
-          <Text style={styles.time}>October 10th</Text>
+          <Text style={styles.time}>
+            {formatDate(data?.data?.createdAt)}
+          </Text>
         </View>
       </View>
     </Container>
