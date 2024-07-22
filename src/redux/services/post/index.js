@@ -40,11 +40,15 @@ export const postApi = createApi({
                 }   
             })
         }),
-        getPostById: builder.query({
-            query: (id) => {
+        getPostById: builder.mutation({
+            query: (data) => {
                 return {
-                    url: `posts/${id}`,
-                    method: 'GET'
+                    url: `/get/?id=${data.id}`,
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${data.token}`
+                    },
                 }
             }
         }),
@@ -93,7 +97,7 @@ export const postApi = createApi({
 // Export hooks for usage in functional components, which are auto-generated based on the defined endpoints
 export const {
     useGetAllPostMutation,
-    useGetPostByIdQuery,
+    useGetPostByIdMutation,
     useGetPostByLimitQuery,
     useDeletePostMutation,
     useCreatePostMutation,

@@ -42,7 +42,8 @@ export default StyleSheet.create({
     fontSize: 14,
     color: 'white',
   },
-  ımage: {
+
+  image: {
     width: '100%',
     height: 400,
     resizeMode: 'cover',
@@ -53,7 +54,7 @@ export default StyleSheet.create({
     width: '30%',
     marginLeft: 15,
   },
-  ıconContainer: {
+  iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 15,

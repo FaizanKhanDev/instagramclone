@@ -10,7 +10,6 @@ const ProfilPost = ({ navigation }) => {
   useEffect(() => {
     const fetchTokenAndPosts = async () => {
       const token = await AsyncStorage.getItem('token');
-      console.log("token: ", token);
       if (token) {
         fetchAllPost({ type: "POST", token });
       } else {
@@ -33,7 +32,7 @@ const ProfilPost = ({ navigation }) => {
     <Container>
       <View style={styles.imageRow}>
         {data?.data?.map(post => post.images.map(image => (
-          <TouchableOpacity onPress={() => navigation.navigate('SinglePost')} key={image.id} style={styles.imageContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('SinglePost', { postId: post.id })} key={image.id} style={styles.imageContainer}>
             <Image style={styles.image} source={{ uri: image.url }} />
           </TouchableOpacity>
         )))}
