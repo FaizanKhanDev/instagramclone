@@ -11,21 +11,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 
 import styles from './Post.styles';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 
 const SinglePost = ({ navigation }) => {
-  const route = useRoute();
-  const { postId } = route.params;
-  const [isFilled, setIsFilled] = useState(false);
-  const [likeCounts, setLikeCounts] = useState();
-  const handlePress = () => {
-    setIsFilled(!isFilled);
-  };
+  /* ----- GET POST ----- */
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
+
+  /* ----- LIKE POST ----- */
+  const [likePost,
+    { isLoading: likePostLoading,
+      error: likePostError, data: likePostData
+    }
+  ] = useLikePostMutation();
+
+  let [token, setToken] = useState(null);
   useEffect(() => {
     const fetchTokenAndPost = async () => {
-
       const token = await AsyncStorage.getItem('token');
+      setToken(token);
+
       if (token) {
         try {
           await fetchPostById({ id: postId, token });
@@ -39,6 +42,25 @@ const SinglePost = ({ navigation }) => {
     fetchTokenAndPost();
   }, [fetchPostById, postId]);
 
+
+  const route = useRoute();
+  const { postId } = route.params;
+  const [isFilled, setIsFilled] = useState(false);
+
+  const handlePress = async () => {
+    setIsFilled(!isFilled);
+    let payload = {
+      postId: postId,
+      token: token,
+      key: 'LIKES'
+    }
+   let response = await likePost(payload);
+   console.log("response: ", JSON.stringify(response));
+   
+  };
+
+
+
   const post = data?.data;
   let user = post?.user
   let postMetaData = post?.postMetaData;
@@ -47,7 +69,6 @@ const SinglePost = ({ navigation }) => {
       return Item
     }
   });
-  console.log("likes: ", likes);
   const images = post?.images || [];
 
   return (
@@ -104,7 +125,7 @@ const SinglePost = ({ navigation }) => {
 
           <Text style={styles.likeText}>
 
-            {likes && likes[0].content + " likes"} 
+            {likes && likes[0].content + " likes"}
           </Text>
 
           <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
