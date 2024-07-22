@@ -6,19 +6,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Container from '../../components/Container/Container';
+import { useGetPostByIdMutation } from '../../redux/services/post';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 
 import styles from './Post.styles';
-import { useGetPostByIdMutation } from '../../redux/services/post';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SinglePost = ({ navigation }) => {
   const route = useRoute();
   const { postId } = route.params;
-  console.log("postId: ", postId);
-
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
-
+  const [user, setUser] = useState({});
+  const [images, setImage] = useState([]);
+  const [postMetaData, setPostMetaData] = useState([]);
   useEffect(() => {
     const fetchTokenAndPost = async () => {
       const token = await AsyncStorage.getItem('token');
@@ -26,6 +26,11 @@ const SinglePost = ({ navigation }) => {
       if (token) {
         try {
           await fetchPostById({ id: postId, token });
+          const post = data?.data;
+          const image = post?.images || [];
+          setUser(post?.user)
+          setImage(image);
+          setPostMetaData(post?.postMetaData);
         } catch (err) {
           console.error("Error fetching post:", err);
         }
@@ -36,17 +41,7 @@ const SinglePost = ({ navigation }) => {
     fetchTokenAndPost();
   }, [fetchPostById, postId]);
 
-  if (isLoading) {
-    return <Container><View><Text>Loading...</Text></View></Container>;
-  }
 
-  if (error) {
-    console.error("Error fetching post:", error);
-    return <Container><View><Text>Error fetching post</Text></View></Container>;
-  }
-
-  const post = data?.data?.data;
-  const images = post?.images || [];
 
   return (
     <Container insets={{ top: true, bottom: true }}>
@@ -61,7 +56,7 @@ const SinglePost = ({ navigation }) => {
           <View style={styles.top}>
             <View style={styles.topleft}>
               <Image
-                source={require('../../storage/images/post.jpg')}
+                source={require('../../storage/images/profil.jpg')}
                 style={styles.profilImage}
               />
               <Text style={styles.title}>ezgiceylan</Text>
@@ -73,6 +68,10 @@ const SinglePost = ({ navigation }) => {
           </View>
 
           <View style={{ height: 400 }}>
+            {/* <Image
+              source={require('../../storage/images/post.jpg')}
+              style={styles.image}
+            /> */}
             {images.map(image => (
               <Image
                 key={image.id}

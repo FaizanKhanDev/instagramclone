@@ -67,9 +67,10 @@ export default StyleSheet.create({
     color: 'white',
   },
   postName: {
-    marginLeft: 15,
+    marginLeft: 10,
     fontWeight: 'bold',
     color: 'white',
+    marginRight: 10,
     marginTop: 2,
   },
   time: {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -15,13 +15,10 @@ import styles from './Post.styles';
 const SinglePost = ({ navigation }) => {
   const route = useRoute();
   const { postId } = route.params;
-  console.log("postId: ", postId);
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
-
   useEffect(() => {
     const fetchTokenAndPost = async () => {
       const token = await AsyncStorage.getItem('token');
-      console.log("token: ", token);
       if (token) {
         try {
           await fetchPostById({ id: postId, token });
@@ -36,6 +33,8 @@ const SinglePost = ({ navigation }) => {
   }, [fetchPostById, postId]);
 
   const post = data?.data;
+  let user = post?.user
+  let postMetaData = post?.postMetaData
   const images = post?.images || [];
 
   return (
@@ -54,7 +53,7 @@ const SinglePost = ({ navigation }) => {
                 source={require('../../storage/images/profil.jpg')}
                 style={styles.profilImage}
               />
-              <Text style={styles.title}>ezgiceylan</Text>
+              <Text style={styles.title}>{user?.username}</Text>
             </View>
 
             <TouchableOpacity style={{ alignSelf: 'center', marginRight: 10 }}>
@@ -97,8 +96,14 @@ const SinglePost = ({ navigation }) => {
           <Text style={styles.likeText}>700 likes</Text>
 
           <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
-            <Text style={styles.postName}>ezgiceylan</Text>
-            <Text style={{ color: 'white', marginTop: 2 }}> smile..</Text>
+            <Text style={styles.postName}>{user?.username}</Text>
+            <Text style={{ color: 'white', marginTop: 2 }}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+
+
+              {data?.data?.title}
+            </Text>
           </View>
 
           <Text style={styles.comment}>View all 2 comments</Text>
