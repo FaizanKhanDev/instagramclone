@@ -39,7 +39,7 @@ export const postApi = createApi({
                 headers: {
                     'Content-type': 'application/json',
                     'Authorization': `Bearer ${data.token}`
-                }   
+                }
             })
         }),
 
@@ -102,7 +102,7 @@ export const postApi = createApi({
         likePost: builder.mutation({
             query: (data) => {
                 return {
-                    url: `/like/id=${data.id}&type=${data.type}`,
+                    url: `/like?id=${data.postId}&type=${data.key}`,
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',

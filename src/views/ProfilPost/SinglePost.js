@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -15,15 +15,16 @@ import styles from './Post.styles';
 const SinglePost = ({ navigation }) => {
   /* ----- GET POST ----- */
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
+  const [isFilled, setIsFilled] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
 
   /* ----- LIKE POST ----- */
-  const [likePost,
-    { isLoading: likePostLoading,
-      error: likePostError, data: likePostData
-    }
-  ] = useLikePostMutation();
+  const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
 
   let [token, setToken] = useState(null);
+  const route = useRoute();
+  const { postId } = route.params;
+
   useEffect(() => {
     const fetchTokenAndPost = async () => {
       const token = await AsyncStorage.getItem('token');
@@ -42,33 +43,28 @@ const SinglePost = ({ navigation }) => {
     fetchTokenAndPost();
   }, [fetchPostById, postId]);
 
-
-  const route = useRoute();
-  const { postId } = route.params;
-  const [isFilled, setIsFilled] = useState(false);
+  useEffect(() => {
+    if (data) {
+      const post = data?.data;
+      const likes = post?.postMetaData?.find((item) => item.key === "LIKES")?.content || 0;
+      setIsFilled(likes > 1);
+    }
+  }, [data]);
 
   const handlePress = async () => {
-    setIsFilled(!isFilled);
+    setIsFilled(prev => !prev);
     let payload = {
       postId: postId,
       token: token,
-      key: 'LIKES'
-    }
-   let response = await likePost(payload);
-   console.log("response: ", JSON.stringify(response));
-   
+      key: 'LIKE'
+    };
+    let response = await likePost(payload);
   };
 
-
-
   const post = data?.data;
-  let user = post?.user
+  let user = post?.user;
   let postMetaData = post?.postMetaData;
-  let likes = postMetaData?.filter((Item) => {
-    if (Item.key === "LIKES") {
-      return Item
-    }
-  });
+  let likes = postMetaData?.find((item) => item.key === "LIKES")?.content || 0;
   const images = post?.images || [];
 
   return (
@@ -97,11 +93,22 @@ const SinglePost = ({ navigation }) => {
 
           <View style={{ height: 400 }}>
             {images.map(image => (
-              <Image
-                key={image.id}
-                source={{ uri: image.url }}
-                style={styles.image}
-              />
+              <View key={image.id} style={{ position: 'relative' }}>
+                {imageLoading && (
+                  <ActivityIndicator
+                    size="large"
+                    color="#fff"
+                    style={styles.loadingIndicator}
+                  />
+                )}
+                <Image
+                  source={{ uri: image.url }}
+                  style={styles.image}
+                  onLoadEnd={() => setImageLoading(false)}
+                  onLoad={() => setImageLoading(false)}
+                  onError={() => setImageLoading(false)}
+                />
+              </View>
             ))}
           </View>
 
@@ -124,19 +131,30 @@ const SinglePost = ({ navigation }) => {
           </View>
 
           <Text style={styles.likeText}>
-
-            {likes && likes[0].content + " likes"}
+            {isFilled ? 'Liked' : 'Not Liked'} {likes} likes
           </Text>
 
           <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
-            <Text style={styles.postName}>{user?.username}</Text>
-            <Text style={{ color: 'white', marginTop: 2 }}
-              numberOfLines={1}
-              ellipsizeMode="tail">
+            {
+              data ? (
+                <>
+                  <Text style={styles.postName}>{user?.username}</Text>
+                  <Text style={{ color: 'white', marginTop: 2 }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {data?.data?.title}
+                  </Text>
+                </>
+              ) :
+                (
+                  <>
+                    <Text>
+                      Loading.....
+                    </Text>
+                  </>
+                )
+            }
 
-
-              {data?.data?.title}
-            </Text>
           </View>
 
           <Text style={styles.comment}>View all 2 comments</Text>
