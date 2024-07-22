@@ -6,18 +6,25 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Container from '../../components/Container/Container';
-import { useGetPostByIdMutation } from '../../redux/services/post';
+import { useGetPostByIdMutation, useLikePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 
 import styles from './Post.styles';
+import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 
 const SinglePost = ({ navigation }) => {
   const route = useRoute();
   const { postId } = route.params;
+  const [isFilled, setIsFilled] = useState(false);
+  const [likeCounts, setLikeCounts] = useState();
+  const handlePress = () => {
+    setIsFilled(!isFilled);
+  };
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();
   useEffect(() => {
     const fetchTokenAndPost = async () => {
+
       const token = await AsyncStorage.getItem('token');
       if (token) {
         try {
@@ -34,7 +41,13 @@ const SinglePost = ({ navigation }) => {
 
   const post = data?.data;
   let user = post?.user
-  let postMetaData = post?.postMetaData
+  let postMetaData = post?.postMetaData;
+  let likes = postMetaData?.filter((Item) => {
+    if (Item.key === "LIKES") {
+      return Item
+    }
+  });
+  console.log("likes: ", likes);
   const images = post?.images || [];
 
   return (
@@ -62,10 +75,6 @@ const SinglePost = ({ navigation }) => {
           </View>
 
           <View style={{ height: 400 }}>
-            {/* <Image
-              source={require('../../storage/images/post.jpg')}
-              style={styles.image}
-            /> */}
             {images.map(image => (
               <Image
                 key={image.id}
@@ -77,8 +86,8 @@ const SinglePost = ({ navigation }) => {
 
           <View style={styles.iconContainer}>
             <View style={styles.leftIcon}>
-              <TouchableOpacity>
-                <AntDesign name={'hearto'} size={24} color={'white'} />
+              <TouchableOpacity onPress={handlePress}>
+                <AntDesign name={isFilled ? 'heart' : 'hearto'} size={24} color={isFilled ? 'red' : 'white'} />
               </TouchableOpacity>
 
               <TouchableOpacity>
@@ -93,7 +102,10 @@ const SinglePost = ({ navigation }) => {
             </View>
           </View>
 
-          <Text style={styles.likeText}>700 likes</Text>
+          <Text style={styles.likeText}>
+
+            {likes && likes[0].content + " likes"} 
+          </Text>
 
           <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
             <Text style={styles.postName}>{user?.username}</Text>

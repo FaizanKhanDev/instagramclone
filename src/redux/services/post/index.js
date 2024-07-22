@@ -30,6 +30,8 @@ export const postApi = createApi({
             }
         }),
 
+
+        /* ===== Get All Post ====*/
         getAllPost: builder.mutation({
             query: (data) => ({
                 url: `/all?type=${data.type}`,
@@ -40,6 +42,8 @@ export const postApi = createApi({
                 }   
             })
         }),
+
+        /* ===== Get Post By Id ====*/
         getPostById: builder.mutation({
             query: (data) => {
                 return {
@@ -53,6 +57,8 @@ export const postApi = createApi({
             }
         }),
 
+
+        /* ===== Get Post By Limit ====*/
         getPostByLimit: builder.query({
             query: (num) => {
                 console.log("Limit Number:", num)
@@ -63,6 +69,8 @@ export const postApi = createApi({
             }
         }),
 
+
+        /* ===== Delete Post ====*/
         deletePost: builder.mutation({
             query: (id) => {
                 console.log("Delete ID:", id)
@@ -73,8 +81,7 @@ export const postApi = createApi({
             }
         }),
 
-
-
+        /* ===== Update Post ====*/
         updatePost: builder.mutation({
             query: (updatePostData) => {
                 console.log("Update Post: ", updatePostData)
@@ -90,6 +97,20 @@ export const postApi = createApi({
                 }
             }
         }),
+
+
+        likePost: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/like`,
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: data
+                }
+            }
+        }),
     }),
 
 })
@@ -101,5 +122,6 @@ export const {
     useGetPostByLimitQuery,
     useDeletePostMutation,
     useCreatePostMutation,
-    useUpdatePostMutation 
+    useUpdatePostMutation,
+    useLikePostMutation,
 } = postApi
