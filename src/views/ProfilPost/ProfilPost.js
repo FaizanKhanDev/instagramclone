@@ -1,37 +1,48 @@
-import React from 'react';
-import { Image, Text, Animated, TouchableOpacity, ScrollView, View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { Image, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import Container from '../../components/Container/Container';
+import { useGetAllPostMutation } from '../../redux/services/post';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfilPost = ({ scrollY }) => {
+const ProfilPost = ({ navigation }) => {
+  const [fetchAllPost, { isLoading, error, data }] = useGetAllPostMutation();
+
+  useEffect(() => {
+    const fetchTokenAndPosts = async () => {
+      const token = await AsyncStorage.getItem('token');
+      console.log("token: ", token);
+      if (token) {
+        fetchAllPost({ type: "POST", token });
+      } else {
+        console.error("Token not found");
+      }
+    };
+    fetchTokenAndPosts();
+  }, [fetchAllPost]);
+
+  if (isLoading) {
+    return <Container><View><Text>Loading...</Text></View></Container>;
+  }
+
+  if (error) {
+    console.error("Error fetching posts:", error);
+    return <Container><View><Text>Error fetching posts</Text></View></Container>;
+  }
+
   return (
-    <Container style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      >
-        <View style={styles.imageRow}>
-          {[...Array(30)].map((_, index) => (
-            <TouchableOpacity key={index} style={styles.imageContainer}>
-              <Image style={styles.image} source={require('../../storage/images/post.jpg')} />
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+    <Container>
+      <View style={styles.imageRow}>
+        {data?.data?.map(post => post.images.map(image => (
+          <TouchableOpacity onPress={() => navigation.navigate('SinglePost')} key={image.id} style={styles.imageContainer}>
+            <Image style={styles.image} source={{ uri: image.url }} />
+          </TouchableOpacity>
+        )))}
+      </View>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flexGrow: 0,
-  },
   imageRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

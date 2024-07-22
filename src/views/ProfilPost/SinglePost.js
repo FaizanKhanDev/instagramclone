@@ -23,7 +23,7 @@ const SinglePost = ({ navigation }) => {
           <View style={styles.top}>
             <View style={styles.topleft}>
               <Image
-                source={require('../../storage/images/profil.jpg')}
+                source={{ uri: 'https://i.imgur.com/aVlDXZ9.png' }}
                 style={styles.profilImage}
               />
               <Text style={styles.title}>ezgiceylan</Text>
@@ -36,7 +36,8 @@ const SinglePost = ({ navigation }) => {
 
           <View style={{ height: 400 }}>
             <Image
-              source={require('../../storage/images/post.jpg')}
+              source={{ uri: 'https://i.imgur.com/aVlDXZ9.png' }}
+
               style={styles.image}
             />
           </View>
