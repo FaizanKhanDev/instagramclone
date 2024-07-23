@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   userName: {
-    color: '#D8D8D8',
+    color: '#0e1111',
     fontWeight: 'bold',
     marginTop: 3,
     marginBottom: 3,
@@ -9,7 +9,7 @@ export default StyleSheet.create({
     marginLeft: 10,
   },
   bio: {
-    color: '#D8D8D8',
+    color: '#0e1111',
     fontSize: 15,
     marginLeft: 12,
     marginTop: 5,
@@ -66,7 +66,7 @@ export default StyleSheet.create({
     borderColor: '#2E2E2E',
   },
   label: {
-    color: 'white',
+    color: '#0e1111',
     marginTop: 5,
   },
   bodyProfile: {
@@ -87,7 +87,7 @@ export default StyleSheet.create({
     width: '22%',
   },
   header: {
-    color: 'white',
+    color: '#0e1111',
     fontWeight: '400',
     fontSize: 22,
   },
@@ -113,7 +113,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   labelText: {
-    color: 'white',
+    color: '#0e1111',
     fontSize: 18,
     fontWeight: '500',
     paddingLeft: 15,
@@ -137,7 +137,7 @@ export default StyleSheet.create({
     marginHorizontal: 5,
   },
   numberContainer: {
-    color: 'white',
+    color: '#0e1111',
     fontWeight: 'bold',
     alignSelf: 'center',
     fontSize: 18,
@@ -145,7 +145,7 @@ export default StyleSheet.create({
   },
 
   text: {
-    color: 'white',
+    color: '#0e1111',
     fontSize: 16,
     alignSelf: 'center',
   },

@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: '33%',
     height: 135,
-    padding: 2, // Optional padding to separate images
+    padding: 2,
   },
   centered: {
     flex: 1,

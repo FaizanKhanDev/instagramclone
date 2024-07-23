@@ -46,7 +46,7 @@ const ProfileBar = () => {
   return (
     <SafeAreaView style={styles.body}>
       <View style={styles.left}>
-        <Feather name="lock" size={18} color="white" />
+        <Feather name="lock" size={18} color="#0e1111" />
         <Text style={styles.header}>Faizan Khan</Text>
         {/* <Image
           source={require('../../../assets/images/down.png')}
@@ -59,7 +59,7 @@ const ProfileBar = () => {
           <FontAwesome
             name="plus-square-o"
             size={28}
-            color="white"
+            color="#0e1111"
             style={{ marginRight: 10 }}
           />
         </TouchableOpacity>
@@ -69,7 +69,7 @@ const ProfileBar = () => {
           height={450}
           sheetBackgroundColor="#262626">
           <View style={{ alignItems: 'center', marginTop: 15 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
+            <Text style={{ color: '#0e1111', fontSize: 18, fontWeight: 'bold' }}>
               Create
             </Text>
           </View>
@@ -134,7 +134,7 @@ const ProfileBar = () => {
                 navigation.navigate('Settings');
                 bottomSheet.current.close();
               }}>
-              <Ionicons name="settings-sharp" size={28} color="white" />
+              <Ionicons name="settings-sharp" size={28} color="#0e1111" />
               <Text style={styles.label}>Settings</Text>
             </TouchableOpacity>
 
@@ -163,12 +163,12 @@ const ProfileBar = () => {
             </View>
 
             <View style={styles.sheet}>
-              <Feather name="bookmark" size={28} color="white" />
+              <Feather name="bookmark" size={28} color="#33333" />
               <Text style={styles.label}>Saved</Text>
             </View>
 
             <View style={styles.sheet}>
-              <AntDesign name="bars" size={28} color="white" />
+              <AntDesign name="bars" size={28} color="#33333" />
               <Text style={styles.label}>Close Friends</Text>
             </View>
 
@@ -183,7 +183,7 @@ const ProfileBar = () => {
         </BottomSheet>
 
         <TouchableOpacity onPress={() => bottomSheet.current.show()}>
-          <FontAwesome name="bars" size={28} color="white" />
+          <FontAwesome name="bars" size={28} color="#0e1111" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   header: {
-    color: 'white',
+    color: '#0e1111',
     fontWeight: 'bold',
     fontSize: 22,
   },
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    color: 'white',
+    color: '#0e1111',
     fontSize: 18,
     fontWeight: '500',
     paddingLeft: 15,

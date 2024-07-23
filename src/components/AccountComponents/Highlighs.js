@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderColor: '#2E2E2E',
   },
   label: {
-    color: 'white',
+    color: '#0e1111',
     marginTop: 5,
     marginLeft: 15,
   },

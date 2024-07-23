@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   numberContainer: {
-    color: 'white',
+    color: '#0e1111',
     fontWeight: 'bold',
     alignSelf: 'center',
     fontSize: 18,
     marginBottom: 5,
   },
   text: {
-    color: 'white',
+    color: '#0e1111',
     fontSize: 16,
     alignSelf: 'center',
   },
