@@ -11,8 +11,9 @@ CREATE_POST,
   } from './actionTypes';
 
   /* ------ Create ------ */
-  export const createPost = () => ({
+  export const createPosts = (data) => ({
     type: CREATE_POST,
+    payload: data
   });
 
 

@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 
 import styles from './Post.styles';
+const MAX_TITLE_LENGTH = 100;
 
 const SinglePost = ({ navigation }) => {
   const [fetchPostById, { isLoading, error, data }] = useGetPostByIdMutation();

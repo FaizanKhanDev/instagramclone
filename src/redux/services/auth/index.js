@@ -9,7 +9,6 @@ export const authApi = createApi({
     // RTK Query ships with fetchBaseQuery, which is a lightweight fetch wrapper that automatically handles request headers and response parsing in a manner similar to common libraries like axios.
     baseQuery: fetchBaseQuery({
         baseUrl: 'http://192.168.42.11:8000/api/v1/auth',
-        // baseUrl: 'http://192.168.42.98:8000/api/v1/auth',
     }),
 
     // The set of operations that we want to perform against the server.

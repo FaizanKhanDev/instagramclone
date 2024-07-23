@@ -10,8 +10,13 @@ import { useCreatePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SnackBar from '../../components/common/SnackBar';
 import { useNavigation } from '@react-navigation/native';
-
+import { createPosts, getAllPosts } from '../../redux/store/actions/postActions';
+import { useDispatch } from 'react-redux';
+import { useGetAllPostMutation } from '../../redux/services/post';
 const CreatePost = ({ route, navigation }) => {
+    const dispatch = useDispatch();
+    const [fetchAllPost, { isLoading: isLoadingPosts, error: errorPosts, data }] = useGetAllPostMutation();
+
     const { selectedImage } = route.params;
     const [createPost, { loading, error }] = useCreatePostMutation();
     const [title, setTitle] = useState('');
@@ -22,7 +27,7 @@ const CreatePost = ({ route, navigation }) => {
     const [privacyId, setPrivacyId] = useState(1);
     const bottomSheetRef = useRef();
     const navigate = useNavigation();
-    
+
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState('');
     const [isExpanded, setIsExpanded] = useState(false);
@@ -87,14 +92,20 @@ const CreatePost = ({ route, navigation }) => {
             privacyId: privacyId,
             fileType: "IMAGE",
             "images": [
-                "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkVkqZAQKQRc8l9aXaaeLKLzd3R1U6hUsBiw&s",
             ]
         }
-        console.log("payload: ", JSON.stringify(payload));
 
         let response = await createPost(payload);
-        console.log("response: ", JSON.stringify(response.data));
+        console.log("Response: ", response.data);
         if (response.data.status == "success") {
+            await fetchAllPost({ type: "POST", token: storedToken }).then((response) => {
+                if (response.data) {
+                    dispatch(getAllPosts(response.data));
+                }
+            });
+
+
             setSnackBarVisible(true);
             setSnackBarMessage("Post created successfully");
             setTimeout(() => {
@@ -178,10 +189,10 @@ const CreatePost = ({ route, navigation }) => {
                         />
                     </View>
 
-                    <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
-                        <Text style={styles.titleText}>
+                    {/* <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
+                         <Text style={styles.titleText}>
                             {getDisplayTitle(title)}
-                        </Text>
+                        </Text> 
                         {title.length > MAX_TITLE_LENGTH && (
                             <TouchableOpacity onPress={handleReadMore}>
                                 <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 5 }}>
@@ -189,7 +200,7 @@ const CreatePost = ({ route, navigation }) => {
                                 </Text>
                             </TouchableOpacity>
                         )}
-                    </View>
+                    </View> */}
                 </KeyboardAvoidingView>
 
                 <TouchableOpacity onPress={handlePost}>

@@ -8,13 +8,14 @@ import {
     DELETE_POST,
     DELETE_POST_SUCCESS,
     CREATE_POST,
+
 } from '../actions/actionTypes';
 
 
 
 const initialState = {
     error: null,
-    posts:[]
+    posts: []
 };
 
 
@@ -23,20 +24,13 @@ const initialState = {
 const postReducer = (state = initialState, action) => {
     switch (action.type) {
         /* ------ Create Post ------ */
-            case CREATE_POST:
-                return {
-                  ...state,
-                  isAuthenticated: true,
-                  user: action.payload,
-                  error: null,
-                };
-            case CREATE_POST:
-                return {
-                  ...state,
-                  isAuthenticated: false,
-                  user: null,
-                  error: action.payload,
-                };
+        case CREATE_POST:
+            console.log("Create postReducer: ", action.payload);
+            return {
+                ...state,
+                posts: [...state.posts, action.payload],
+            };
+
         /* ------ GET ALL Post ------ */
         case GET_ALL_POSTS:
             return {
