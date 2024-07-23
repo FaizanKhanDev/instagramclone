@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   userName: {
     color: '#0e1111',
@@ -21,24 +21,32 @@ export default StyleSheet.create({
   edit: {
     height: 35,
     borderRadius: 10,
-    backgroundColor: '#262626',
+    borderColor: '#cffa41',
+    backgroundColor: '#cffa41',
     justifyContent: 'center',
     marginVertical: 5,
     marginBottom: 20,
     marginLeft: 15,
     marginRight: 10,
     alignItems: 'center',
-    width: '82%',
+    width: '90%',
+  },
+  editTextView: {
+    alignItems: 'center',
+
+
   },
   editText: {
-    color: '#D8D8D8',
+    color: '#414a4c',
     fontWeight: 'bold',
     fontSize: 16,
   },
   icon: {
     height: 36,
     borderRadius: 10,
-    backgroundColor: '#262626',
+    // backgroundColor: '#262626',
+    borderColor: '#cffa41',
+    backgroundColor: '#cffa41',
     width: '10%',
     justifyContent: 'center',
     alignItems: 'center',
