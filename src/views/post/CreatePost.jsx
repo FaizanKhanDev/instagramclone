@@ -93,6 +93,7 @@ const CreatePost = ({ route, navigation }) => {
         console.log("payload: ", JSON.stringify(payload));
 
         let response = await createPost(payload);
+        console.log("response: ", JSON.stringify(response.data));
         if (response.data.status == "success") {
             setSnackBarVisible(true);
             setSnackBarMessage("Post created successfully");

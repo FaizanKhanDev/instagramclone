@@ -69,7 +69,7 @@ const ProfileBar = () => {
           height={450}
           sheetBackgroundColor="#262626">
           <View style={{ alignItems: 'center', marginTop: 15 }}>
-            <Text style={{ color: '#0e1111', fontSize: 18, fontWeight: 'bold' }}>
+            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>
               Create
             </Text>
           </View>
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    color: '#0e1111',
+    color: 'white',
     fontSize: 18,
     fontWeight: '500',
     paddingLeft: 15,

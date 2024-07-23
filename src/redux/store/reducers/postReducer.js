@@ -2,7 +2,7 @@ import {
     POST_REQUEST,
     POST_SUCCESS,
     POST_FAILURE,
-    GET_POSTS,
+    GET_ALL_POSTS,
     GET_POSTS_SUCCESS,
     GET_POSTS_FAILURE,
     DELETE_POST,
@@ -14,6 +14,7 @@ import {
 
 const initialState = {
     error: null,
+    posts:[]
 };
 
 
@@ -29,14 +30,19 @@ const postReducer = (state = initialState, action) => {
                   user: action.payload,
                   error: null,
                 };
-              case CREATE_POST:
+            case CREATE_POST:
                 return {
                   ...state,
                   isAuthenticated: false,
                   user: null,
                   error: action.payload,
                 };
-
+        /* ------ GET ALL Post ------ */
+        case GET_ALL_POSTS:
+            return {
+                ...state,
+                posts: action.payload
+            };
         default:
             return state;
     }

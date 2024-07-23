@@ -3,16 +3,24 @@ import { Image, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator } fr
 import Container from '../../components/Container/Container';
 import { useGetAllPostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAllPosts } from '../../redux/store/actions/postActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfilPost = ({ navigation }) => {
   const [fetchAllPost, { isLoading, error, data }] = useGetAllPostMutation();
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post.posts);
 
   useEffect(() => {
     const fetchTokenAndPosts = async () => {
       try {
         const token = await AsyncStorage.getItem('token');
         if (token) {
-          fetchAllPost({ type: "POST", token });
+          fetchAllPost({ type: "POST", token }).then((response) => {
+            if (response.data) {
+              dispatch(getAllPosts(response.data));
+            }
+          });
         } else {
           console.error("Token not found");
         }
@@ -21,14 +29,14 @@ const ProfilPost = ({ navigation }) => {
       }
     };
     fetchTokenAndPosts();
-  }, [fetchAllPost]);
+  }, [fetchAllPost, dispatch]);
 
   if (isLoading) {
     return (
       <Container>
         <View style={styles.centered}>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text>Loading...</Text>
+          <Text style={styles.loadingText}>Loading posts...</Text>
         </View>
       </Container>
     );
@@ -38,7 +46,7 @@ const ProfilPost = ({ navigation }) => {
     return (
       <Container>
         <View style={styles.centered}>
-          <Text>Error fetching posts</Text>
+          <Text style={styles.errorText}>Error fetching posts. Please try again later.</Text>
         </View>
       </Container>
     );
@@ -47,15 +55,21 @@ const ProfilPost = ({ navigation }) => {
   return (
     <Container>
       <View style={styles.imageRow}>
-        {data?.data?.map(post => post.images.map(image => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SinglePost', { postId: post.id })}
-            key={image.id}
-            style={styles.imageContainer}
-          >
-            <Image style={styles.image} source={{ uri: image.url }} />
-          </TouchableOpacity>
-        )))}
+        {posts?.data && posts.data.length > 0 ? (
+          posts.data.map(post => post.images && post.images.map(image => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SinglePost', { postId: post.id })}
+              key={image.id}
+              style={styles.imageContainer}
+            >
+              <Image style={styles.image} source={{ uri: image.url }} />
+            </TouchableOpacity>
+          )))
+        ) : (
+          <View style={styles.centered}>
+            <Text style={styles.noPostsText}>No posts available.</Text>
+          </View>
+        )}
       </View>
     </Container>
   );
@@ -79,6 +93,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#000',
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+  },
+  noPostsText: {
+    fontSize: 16,
+    color: '#000',
   },
 });
 
