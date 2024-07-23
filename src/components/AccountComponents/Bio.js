@@ -32,19 +32,12 @@ const Bio = ({ route }) => {
           </View>
         </TouchableOpacity>
 
-        {/* <View style={styles.icon}> */}
-          {/* <Image
+        <View style={styles.icon}> 
+          <Image
             source={require('../../../assets/images/invite.png')}
-            style={{ width: 16, height: 16 }}
-          /> */}
-          {/* <FontAwesome
-             name="user-plus"
-            size={20}
-            solid={false}
-            color="#414a4c"
-            style={{ marginRight: 0 }}
-          /> */}
-        {/* </View> */}
+            style={{ tintColor: '#414a4c', width: 16, height: 16 }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

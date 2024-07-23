@@ -20,11 +20,12 @@ const Account = ({ route }) => {
         )}
         scrollEventThrottle={16}
       >
-        <View>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
           <ProfilBar />
           <ProfileHeader route={route.params} />
           <Bio route={route.params} />
           <Highlighs />
+          <View style={styles.hr} />
         </View>
         <View style={styles.tabNavigatorContainer}>
           <TopTabNavigator scrollY={scrollY} />
@@ -37,6 +38,11 @@ const Account = ({ route }) => {
 const styles = StyleSheet.create({
   tabNavigatorContainer: {
     height: 800,
+  },
+  hr: {
+    borderBottomColor: '#3b444b', 
+    borderBottomWidth: 1,
+    width: '100%',
   },
 });
 

@@ -29,7 +29,7 @@ export default StyleSheet.create({
     marginLeft: 15,
     marginRight: 10,
     alignItems: 'center',
-    width: '90%',
+    width: '80%',
   },
   editTextView: {
     alignItems: 'center',

@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import ProfilPost from '../views/ProfilPost/ProfilPost';
 import Reels from '../views/ProfilReels/ProfilReels';
 import Tag from '../views/Tag/Tag';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,19 +15,22 @@ const TopTabNavigator = ({ scrollY }) => {
       screenOptions={({ route }) => ({
         tabBarIcon: () => {
           if (route.name === 'ProfilPost') {
-            return <Image source={require('../../assets/images/grid.png')} />;
+            return <Image style={{ tintColor: 'black'  }} source={require('../../assets/images/grid.png')} />;
+
           }
           if (route.name === 'ProfilReels') {
-            return <Image source={require('../../assets/images/video.png')} />;
+            return <Image style={{ tintColor: 'black'  }} source={require('../../assets/images/video.png')} />;
+
           }
           if (route.name === 'Tag') {
-            return <Image source={require('../../assets/images/avatar.png')} />;
+            return <Image style={{ tintColor: 'black'  }} source={require('../../assets/images/avatar.png')} />
+
           }
         },
-        tabBarIndicatorStyle: { backgroundColor: 'white', height: 2 },
+        tabBarIndicatorStyle: { backgroundColor: '#cffa41', height: 3 },
         tabBarLabel: '',
         tabBarStyle: {
-          backgroundColor: 'black',
+          // backgroundColor: 'black',
         },
       })}
     >

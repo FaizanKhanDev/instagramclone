@@ -47,7 +47,7 @@ const ProfileBar = () => {
     <SafeAreaView style={styles.body}>
       <View style={styles.left}>
         <Feather name="lock" size={18} color="#0e1111" />
-        <Text style={styles.header}>Faizan Khan</Text>
+        <Text style={styles.header}>Faizan </Text>
         {/* <Image
           source={require('../../../assets/images/down.png')}
           style={{ width: 18, height: 18 }}
