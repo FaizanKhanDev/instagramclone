@@ -67,7 +67,7 @@ const Comment = ({ navigation, route }) => {
                 </View>
               </View>
 
-              <View style={styles.topComment}>
+              {/* <View style={styles.topComment}>
                 <Image style={styles.image} source={route.params.image} />
                 <View style={{ marginLeft: 10 }}>
                   <Text style={{ color: '#414a4c', fontWeight: 'bold' }}>
@@ -77,7 +77,7 @@ const Comment = ({ navigation, route }) => {
                     {route.params.explanation}
                   </Text>
                 </View>
-              </View>
+              </View> */}
 
               <View style={styles.line} />
               {data.map((item, index) => (
