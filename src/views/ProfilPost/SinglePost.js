@@ -20,7 +20,6 @@ const SinglePost = ({ navigation }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [likes, setLikes] = useState(0);
 
-
   const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
 
   let [token, setToken] = useState(null);
@@ -55,7 +54,6 @@ const SinglePost = ({ navigation }) => {
       /* --- likes --- */
       if (likes.length > 0) {
         setLikes(likes[0]);
-
       }
 
       /* --- isFilled --- */
@@ -63,11 +61,8 @@ const SinglePost = ({ navigation }) => {
       if (userLike) {
         setIsFilled(userLike);
       }
-
     }
   }, [data]);
-
-
 
   const getText = (text, maxLength) => {
     if (isExpanded || text.length <= maxLength) {
@@ -83,7 +78,6 @@ const SinglePost = ({ navigation }) => {
   const post = data?.data;
   let user = post?.user;
   let postMetaData = post?.postMetaData;
-
 
   const images = post?.images || [];
 
@@ -110,12 +104,13 @@ const SinglePost = ({ navigation }) => {
     }
   };
 
-
   const formatDate = (date) => {
     const d = new Date(date);
     const options = { month: 'short', day: 'numeric' };
     return d.toLocaleDateString('en-US', options);
   }
+
+  const shouldShowReadMore = data?.data?.title.length > MAX_TITLE_LENGTH;
 
   return (
     <Container insets={{ top: true, bottom: true }}>

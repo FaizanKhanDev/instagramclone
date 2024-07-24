@@ -37,7 +37,7 @@ const Account = ({ route }) => {
 
 const styles = StyleSheet.create({
   tabNavigatorContainer: {
-    height: 800,
+    height: 1200,
   },
   hr: {
     borderBottomColor: '#3b444b', 
