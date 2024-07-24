@@ -18,6 +18,8 @@ const SinglePost = ({ navigation }) => {
   const [isFilled, setIsFilled] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [likes, setLikes] = useState(0);
+
 
   const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
 
@@ -45,21 +47,27 @@ const SinglePost = ({ navigation }) => {
 
   useEffect(() => {
     if (data) {
-      const post = data?.data;
-      const likes = post?.postMetaData?.find((item) => item.key === "LIKES")?.content || 0;
-      setIsFilled(likes > 1);
+      let likes = data.data.postMetaData.map((item) => {
+        if (item.key === 'LIKES') {
+          return item.content;
+        }
+      });
+      /* --- likes --- */
+      if (likes.length > 0) {
+        setLikes(likes[0]);
+
+      }
+
+      /* --- isFilled --- */
+      let userLike = data.data.likes.length > 0 ? true : false;
+      if (userLike) {
+        setIsFilled(userLike);
+      }
+
     }
   }, [data]);
 
-  const handlePress = async () => {
-    setIsFilled(prev => !prev);
-    let payload = {
-      postId: postId,
-      token: token,
-      key: 'LIKE'
-    };
-    let response = await likePost(payload);
-  };
+
 
   const getText = (text, maxLength) => {
     if (isExpanded || text.length <= maxLength) {
@@ -75,8 +83,33 @@ const SinglePost = ({ navigation }) => {
   const post = data?.data;
   let user = post?.user;
   let postMetaData = post?.postMetaData;
-  let likes = postMetaData?.find((item) => item.key === "LIKES")?.content || 0;
+
+
   const images = post?.images || [];
+
+  const handlePress = async () => {
+    const newIsFilled = !isFilled;
+    setIsFilled(newIsFilled);
+
+    const payload = {
+      postId: postId,
+      isFilled: newIsFilled,
+      token: token,
+      key: newIsFilled ? 'LIKE' : 'UNLIKE'
+    };
+
+    try {
+      await likePost(payload);
+      if (newIsFilled) {
+        setLikes((prevLikes) => prevLikes + 1);
+      } else {
+        setLikes((prevLikes) => prevLikes - 1);
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -86,10 +119,10 @@ const SinglePost = ({ navigation }) => {
 
   return (
     <Container insets={{ top: true, bottom: true }}>
-      <View>
+      <View style={{ backgroundColor: 'white', flex: 1 }}>
         <View style={styles.left}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back" size={28} color="white" />
+            <Ionicons name="chevron-back" size={28} color="#3b444b" />
           </TouchableOpacity>
           <Text style={styles.label}> Posts</Text>
         </View>
@@ -124,19 +157,20 @@ const SinglePost = ({ navigation }) => {
 
           <View style={styles.iconContainer}>
             <View style={styles.leftIcon}>
+
               <TouchableOpacity onPress={handlePress}>
-                <AntDesign name={isFilled ? 'heart' : 'hearto'} size={24} color={isFilled ? 'red' : 'white'} />
+                <AntDesign name={isFilled ? 'heart' : 'hearto'} size={24} color={isFilled ? 'red' : '#3b444b'} />
               </TouchableOpacity>
 
               <TouchableOpacity>
-                <Feather name="message-circle" size={24} color="white" />
+                <Feather name="message-circle" size={24} color="#3b444b" />
               </TouchableOpacity>
 
-              <Feather name="send" size={24} color="white" />
+              <Feather name="send" size={24} color="#3b444b" />
             </View>
 
             <View style={{ marginRight: 20 }}>
-              <FontAwesome name="bookmark-o" size={24} color="white" />
+              <FontAwesome name="bookmark-o" size={24} color="#3b444b" />
             </View>
           </View>
 
@@ -152,7 +186,7 @@ const SinglePost = ({ navigation }) => {
                     {getText(data?.data?.title, 20)}
                   </Text>
                   <TouchableOpacity onPress={handleReadMore}>
-                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 5 }}>
+                    <Text style={{ color: '#3b444b', fontWeight: 'bold', marginLeft: 5 }}>
                       {isExpanded ? 'Show less' : 'Read more'}
                     </Text>
                   </TouchableOpacity>

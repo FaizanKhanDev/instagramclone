@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   label: {
-    color: 'white',
+    color: '#3b444b',
     fontSize: 22,
     fontWeight: 'bold',
   },
@@ -40,7 +40,7 @@ export default StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 14,
-    color: 'white',
+    color: '#3b444b',
   },
 
   image: {
@@ -64,12 +64,12 @@ export default StyleSheet.create({
     marginLeft: 15,
     marginTop: 10,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#3b444b',
   },
   postName: {
     marginLeft: 10,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#3b444b',
     marginRight: 10,
     marginTop: 2,
   },
@@ -85,7 +85,7 @@ export default StyleSheet.create({
     color: 'grey',
   },
   titleText: {
-    color: 'white',
+    color: '#3b444b',
     marginTop: 2,
     marginLeft: 15,
     width: '40%',
