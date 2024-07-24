@@ -4,7 +4,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import Container from '../../components/Container/Container';
 import { useGetPostByIdMutation, useLikePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -157,7 +156,16 @@ const SinglePost = ({ navigation }) => {
                 <AntDesign name={isFilled ? 'heart' : 'hearto'} size={24} color={isFilled ? 'red' : '#3b444b'} />
               </TouchableOpacity>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() =>
+                    navigation.navigate({
+                      name: 'Comment',
+                      params: {
+                        image: "",
+                        user: "",
+                        explanation: "",
+                      },
+                    })
+                  }>
                 <Feather name="message-circle" size={24} color="#3b444b" />
               </TouchableOpacity>
 

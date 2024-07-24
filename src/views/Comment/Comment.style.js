@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   label: {
-    color: 'white',
+    color: '#232b2b',
     fontSize: 22,
     fontWeight: 'bold',
   },
@@ -38,6 +38,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    position: 'absolute',
+    bottom: 0,
   },
   image: {
     width: 35,
@@ -67,7 +69,7 @@ export default StyleSheet.create({
   },
   input: {
     marginLeft: 15,
-    fontWeight: '500',
+    width: '65%',
     color: 'white',
   },
 });
