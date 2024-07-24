@@ -112,7 +112,23 @@ export const postApi = createApi({
                 }
             }
         }),
+
+        commentPost: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/comment?id=${data.postId}`,
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${data.token}`
+                    },
+                    body: data
+                }
+            }
+        })
+
     }),
+
 
 })
 
@@ -125,4 +141,5 @@ export const {
     useCreatePostMutation,
     useUpdatePostMutation,
     useLikePostMutation,
+    useCommentPostMutation
 } = postApi

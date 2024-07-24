@@ -1,3 +1,4 @@
+import { stat } from 'react-native-fs';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,

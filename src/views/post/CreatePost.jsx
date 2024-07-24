@@ -13,10 +13,12 @@ import { useNavigation } from '@react-navigation/native';
 import { createPosts, getAllPosts } from '../../redux/store/actions/postActions';
 import { useDispatch } from 'react-redux';
 import { useGetAllPostMutation } from '../../redux/services/post';
+import { useSelector } from 'react-redux';
+
 const CreatePost = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const [fetchAllPost, { isLoading: isLoadingPosts, error: errorPosts, data }] = useGetAllPostMutation();
-
+    const token = useSelector((state) => state.auth.token);
     const { selectedImage } = route.params;
     const [createPost, { loading, error }] = useCreatePostMutation();
     const [title, setTitle] = useState('');
@@ -84,9 +86,8 @@ const CreatePost = ({ route, navigation }) => {
         } else if (selectedOption === 'Friends') {
             setPrivacyId(3);
         }
-        const storedToken = await AsyncStorage.getItem('token');
         let payload = {
-            token: storedToken,
+            token: token,
             title: title,
             type: "POST",
             privacyId: privacyId,
@@ -99,7 +100,7 @@ const CreatePost = ({ route, navigation }) => {
         let response = await createPost(payload);
         console.log("Response: ", response.data);
         if (response.data.status == "success") {
-            await fetchAllPost({ type: "POST", token: storedToken }).then((response) => {
+            await fetchAllPost({ type: "POST", token: token }).then((response) => {
                 if (response.data) {
                     dispatch(getAllPosts(response.data));
                 }

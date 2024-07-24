@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import SnackBar from '../../components/common/SnackBar';
+
 import {
   Image,
   Text,
@@ -17,12 +19,44 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Container from '../../components/Container/Container';
 import data from '../../storage/database/comment';
 import styles from './Comment.style';
+import { useCommentPostMutation } from '../../redux/services/post';
 const Comment = ({ navigation, route }) => {
   const [commentText, setCommentText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  console.log("route: ", keyboardHeight);
-
   const [like, setLike] = useState(false);
+  const [commentPost, { isLoading, data: comment }] = useCommentPostMutation();
+
+  /* -------------- SnackBar --------------- */
+  const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+  const [snackBarMessage, setSnackBarMessage] = React.useState('');
+  const dismissSnackBar = () => {
+    setSnackBarVisible(false);
+  };
+
+  const commentPostHandler = async () => {
+    let payload = {
+      postId: route.params.postId,
+      comment: commentText,
+      token: route.params.token
+    }
+
+    let response = await commentPost(payload)
+    console.log("Response: ", response);
+    if (response.data.status == "success") {
+      setCommentText("");
+      setSnackBarVisible(true);
+      setSnackBarMessage("Comment added successfully");
+      setTimeout(() => {
+        setSnackBarVisible(false);
+        setSnackBarMessage("");
+      }, 1000)
+    }
+  }
+
+  useEffect(() => {
+ 
+
+  }, []);
 
   const handleLike = () => {
     setLike(!like);
@@ -44,7 +78,7 @@ const Comment = ({ navigation, route }) => {
 
   return (
     <Container insets={{ top: true, bottom: true }}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -62,9 +96,9 @@ const Comment = ({ navigation, route }) => {
                   </TouchableOpacity>
                   <Text style={styles.label}> Comments</Text>
                 </View>
-                <View style={{ justifyContent: 'center', marginRight: 20 }}>
+                {/* <View style={{ justifyContent: 'center', marginRight: 20 }}>
                   <Feather name="send" size={24} color="#414a4c" />
-                </View>
+                </View> */}
               </View>
 
               {/* <View style={styles.topComment}>
@@ -129,11 +163,23 @@ const Comment = ({ navigation, route }) => {
               />
             </View>
             <View>
-              <Text style={{ color: 'white', marginRight: 15 }}>Share</Text>
+              <TouchableOpacity onPress={() => commentPostHandler()}>
+                <Feather
+                  name="send"
+                  size={24}
+                  color={commentText ? 'white' : '#414a4c'}
+                  style={{ marginRight: 10 }}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </KeyboardAvoidingView>
       </View>
+      <SnackBar
+        visible={snackBarVisible}
+        snackBarMessage={snackBarMessage}
+        onDismissSnackBar={dismissSnackBar}></SnackBar>
+
     </Container>
   );
 };

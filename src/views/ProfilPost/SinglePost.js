@@ -8,7 +8,7 @@ import Container from '../../components/Container/Container';
 import { useGetPostByIdMutation, useLikePostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
-
+import { useSelector } from 'react-redux';
 import styles from './Post.styles';
 const MAX_TITLE_LENGTH = 100;
 
@@ -18,18 +18,14 @@ const SinglePost = ({ navigation }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [likes, setLikes] = useState(0);
-
+  const token = useSelector((state) => state.auth.token);
   const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
 
-  let [token, setToken] = useState(null);
   const route = useRoute();
   const { postId } = route.params;
 
   useEffect(() => {
     const fetchTokenAndPost = async () => {
-      const token = await AsyncStorage.getItem('token');
-      setToken(token);
-
       if (token) {
         try {
           await fetchPostById({ id: postId, token });
@@ -45,6 +41,7 @@ const SinglePost = ({ navigation }) => {
 
   useEffect(() => {
     if (data) {
+      console.log("data: ", JSON.stringify(data));
       let likes = data.data.postMetaData.map((item) => {
         if (item.key === 'LIKES') {
           return item.content;
@@ -160,9 +157,8 @@ const SinglePost = ({ navigation }) => {
                     navigation.navigate({
                       name: 'Comment',
                       params: {
-                        image: "",
-                        user: "",
-                        explanation: "",
+                        postId: postId,
+                        token: token
                       },
                     })
                   }>
