@@ -81,7 +81,7 @@ const authReducer = (state = initialState, action) => {
         error: action.payload,
       };
     case ON_AUTH_STATE_CHANGE:
-      console.log("authReducer: ", JSON.stringify(action));
+      console.log("authReducer: ", JSON.stringify(action.payload));
       return {
         
         ...state,

@@ -20,7 +20,9 @@ import Container from '../../components/Container/Container';
 import data from '../../storage/database/comment';
 import styles from './Comment.style';
 import { useCommentPostMutation } from '../../redux/services/post';
+import { useSelector } from 'react-redux';
 const Comment = ({ navigation, route }) => {
+  const user = useSelector((state) => state.auth.user);
   const [commentText, setCommentText] = useState('');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [like, setLike] = useState(false);
@@ -47,9 +49,13 @@ const Comment = ({ navigation, route }) => {
     }
 
     let response = await commentPost(payload);
-    console.log("Response: ", response.data);
     if (response.data.status == "success") {
-      setCommentsList([...commentsList, response.data.data]);
+      let newComments = {
+        ...response.data.data,
+        user:user
+      }
+      console.log("New Comments: user ", JSON.stringify(user));
+      setCommentsList([...commentsList, newComments]);
       setCommentText("");
       setSnackBarVisible(true);
       setSnackBarMessage("Comment added successfully");

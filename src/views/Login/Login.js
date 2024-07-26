@@ -14,19 +14,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useOnAuthStateChangeMutation } from '../../redux/services/auth';
 
 const Login = ({ navigation }) => {
-  const [ onAuthStateChangedetect, { data: user } ] = useOnAuthStateChangeMutation();
+  const [onAuthStateChangedetect, { data: user }] = useOnAuthStateChangeMutation();
   useEffect(() => {
     const getToken = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
-        await onAuthStateChangedetect(storedToken);
+        let response = await onAuthStateChangedetect(storedToken);
         if (storedToken) {
           let payload = {
             token: storedToken,
-            user: user
+            user: response.data.user
           }
 
-        dispatch(onAuthStateChange(payload));
+          dispatch(onAuthStateChange(payload));
           navigation.reset({
             index: 0,
             routes: [{ name: 'BottomTab' }],
