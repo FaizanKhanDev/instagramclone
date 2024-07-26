@@ -11,15 +11,22 @@ import SnackBar from '../../components/common/SnackBar';
 import { loginSuccess, onAuthStateChange, setToken } from '../../redux/store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useOnAuthStateChangeMutation } from '../../redux/services/auth';
 
 const Login = ({ navigation }) => {
+  const [ onAuthStateChangedetect, { data: user } ] = useOnAuthStateChangeMutation();
   useEffect(() => {
     const getToken = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
+        await onAuthStateChangedetect(storedToken);
         if (storedToken) {
-          const setToken = dispatch(onAuthStateChange(storedToken));
+          let payload = {
+            token: storedToken,
+            user: user
+          }
+
+        dispatch(onAuthStateChange(payload));
           navigation.reset({
             index: 0,
             routes: [{ name: 'BottomTab' }],
@@ -72,7 +79,6 @@ const Login = ({ navigation }) => {
       return;
     }
     const loginResponse = await login({ identifier: name, password });
-    console.log("loginResponse: ", loginResponse);
     if (loginResponse?.data?.status === "success") {
       let { token, user } = loginResponse.data.data
       dispatch(loginSuccess(user));

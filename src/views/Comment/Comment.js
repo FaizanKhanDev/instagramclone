@@ -25,7 +25,13 @@ const Comment = ({ navigation, route }) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [like, setLike] = useState(false);
   const [commentPost, { isLoading, data: comment }] = useCommentPostMutation();
+  const [commentsList, setCommentsList] = useState([]);
 
+  useEffect(() => {
+    if (route.params) {
+      setCommentsList(route.params.commentList);
+    }
+  }, [route.params]);
   /* -------------- SnackBar --------------- */
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
   const [snackBarMessage, setSnackBarMessage] = React.useState('');
@@ -40,9 +46,10 @@ const Comment = ({ navigation, route }) => {
       token: route.params.token
     }
 
-    let response = await commentPost(payload)
-    console.log("Response: ", response);
+    let response = await commentPost(payload);
+    console.log("Response: ", response.data);
     if (response.data.status == "success") {
+      setCommentsList([...commentsList, response.data.data]);
       setCommentText("");
       setSnackBarVisible(true);
       setSnackBarMessage("Comment added successfully");
@@ -53,10 +60,7 @@ const Comment = ({ navigation, route }) => {
     }
   }
 
-  useEffect(() => {
- 
 
-  }, []);
 
   const handleLike = () => {
     setLike(!like);
@@ -96,37 +100,23 @@ const Comment = ({ navigation, route }) => {
                   </TouchableOpacity>
                   <Text style={styles.label}> Comments</Text>
                 </View>
-                {/* <View style={{ justifyContent: 'center', marginRight: 20 }}>
-                  <Feather name="send" size={24} color="#414a4c" />
-                </View> */}
               </View>
 
-              {/* <View style={styles.topComment}>
-                <Image style={styles.image} source={route.params.image} />
-                <View style={{ marginLeft: 10 }}>
-                  <Text style={{ color: '#414a4c', fontWeight: 'bold' }}>
-                    {route.params.user}
-                  </Text>
-                  <Text style={{ color: '#414a4c', marginTop: 7 }}>
-                    {route.params.explanation}
-                  </Text>
-                </View>
-              </View> */}
 
               <View style={styles.line} />
-              {data.map((item, index) => (
+              {commentsList.map((item, index) => (
                 <View
                   key={index}
                   style={{ justifyContent: 'space-between', flexDirection: 'row' }}
                 >
                   <View style={styles.comment}>
-                    <Image style={styles.images} source={item.image} />
+                    <Image style={styles.images} source={require('../../../assets/images/profil.jpg')} />
                     <View style={{ marginLeft: 10 }}>
                       <Text style={{ color: '#414a4c', fontWeight: 'bold', fontSize: 13 }}>
-                        {item.user}
+                        {item?.user?.username}
                       </Text>
                       <Text style={{ color: '#414a4c', marginTop: 5, fontSize: 15 }}>
-                        {item.comment}
+                        {item.content}
                       </Text>
                       <View style={{ flexDirection: 'row', marginTop: 5 }}>
                         <Text style={styles.answer}>Reply</Text>

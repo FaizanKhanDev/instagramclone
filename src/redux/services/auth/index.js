@@ -47,10 +47,24 @@ export const authApi = createApi({
             }
         }),
 
+        onAuthStateChange: builder.mutation({
+            query: (data) => {
+                return {
+                    url: "/on-auth-state-change",
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'Authorization': `Bearer ${data}`
+                    },
+                }
+            }
+        }),
+
+
 
     }),
 
 })
 
 // Export hooks for usage in functional components, which are auto-generated based on the defined endpoints
-export const { useCreateAccountMutation, useVerifyOtpMutation, useLoginMutation } = authApi
+export const { useCreateAccountMutation, useOnAuthStateChangeMutation, useVerifyOtpMutation, useLoginMutation } = authApi
