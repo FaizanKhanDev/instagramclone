@@ -8,6 +8,7 @@ import {
   SIGNUP_FAILURE,
   LOGOUT,
   SET_TOKEN,
+  ON_AUTH_STATE_CHANGE,
 } from '../actions/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -79,7 +80,14 @@ const authReducer = (state = initialState, action) => {
         user: null,
         error: action.payload,
       };
-    default:
+    case ON_AUTH_STATE_CHANGE:
+      return {
+        ...state,
+        isAuthenticated: true,
+        token: action.payload
+      }
+    
+      default:
       return state;
   }
 };

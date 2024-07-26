@@ -9,6 +9,7 @@ export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 export const LOGOUT = 'LOGOUT';
 export const VERIFY_OTP_REQUEST = 'VERIFY_OTP_REQUEST';
 export const SET_TOKEN = 'SET_TOKEN'
+export const ON_AUTH_STATE_CHANGE = 'ON_AUTH_STATE_CHANGE'
 
 
 /* ========= Post Actions ========= */

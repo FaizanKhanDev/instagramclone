@@ -8,7 +8,7 @@ import Content from '../../components/Content/Content';
 import { useLoginMutation } from '../../redux/services/auth';
 import styles from './Login.styles';
 import SnackBar from '../../components/common/SnackBar';
-import { loginSuccess, setToken } from '../../redux/store/actions/authActions';
+import { loginSuccess, onAuthStateChange, setToken } from '../../redux/store/actions/authActions';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,6 +19,7 @@ const Login = ({ navigation }) => {
       try {
         const storedToken = await AsyncStorage.getItem('token');
         if (storedToken) {
+          const setToken = dispatch(onAuthStateChange(storedToken));
           navigation.reset({
             index: 0,
             routes: [{ name: 'BottomTab' }],

@@ -20,7 +20,7 @@ const SinglePost = ({ navigation }) => {
   const [likes, setLikes] = useState(0);
   const token = useSelector((state) => state.auth.token);
   const [likePost, { isLoading: likePostLoading, error: likePostError, data: likePostData }] = useLikePostMutation();
-
+  const [commentList, setCommentList] = useState([]);
   const route = useRoute();
   const { postId } = route.params;
 
@@ -41,7 +41,13 @@ const SinglePost = ({ navigation }) => {
 
   useEffect(() => {
     if (data) {
-      console.log("data: ", JSON.stringify(data));
+
+      /* --- comments --- */
+      if(data.data.comments.length > 0) {
+        setCommentList(data.data.comments);
+      }
+
+
       let likes = data.data.postMetaData.map((item) => {
         if (item.key === 'LIKES') {
           return item.content;
@@ -157,6 +163,7 @@ const SinglePost = ({ navigation }) => {
                     navigation.navigate({
                       name: 'Comment',
                       params: {
+                        commentList: commentList,
                         postId: postId,
                         token: token
                       },

@@ -7,6 +7,7 @@ import {
   SIGNUP_FAILURE,
   LOGOUT,
   VERIFY_OTP_REQUEST,
+  ON_AUTH_STATE_CHANGE,
   SET_TOKEN,
 } from './actionTypes';
 // Action creators
@@ -53,4 +54,9 @@ export const logout = () => ({
 /* ------ Verify OTP ------ */
 export const verifyOtpRequest = () => ({
   type: VERIFY_OTP_REQUEST,
+})
+
+export const onAuthStateChange = (data) => ({
+  payload: data,
+  type: ON_AUTH_STATE_CHANGE
 })
