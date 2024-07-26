@@ -93,27 +93,34 @@ const CreatePost = ({ route, navigation }) => {
             privacyId: privacyId,
             fileType: "IMAGE",
             "images": [
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkVkqZAQKQRc8l9aXaaeLKLzd3R1U6hUsBiw&s",
+                "https://imgur.com/M0QIBqm.png",
             ]
         }
 
-        let response = await createPost(payload);
-        console.log("Response: ", response.data);
-        if (response.data.status == "success") {
-            await fetchAllPost({ type: "POST", token: token }).then((response) => {
-                if (response.data) {
-                    dispatch(getAllPosts(response.data));
-                }
-            });
+        try {
+            let response = await createPost(payload);
+            if (response.data.status === "success") {
+                await fetchAllPost({ type: "POST", token: token }).then((response) => {
+                    if (response.data) {
+                        dispatch(getAllPosts(response.data));
+                    }
+                });
 
-
+                setSnackBarVisible(true);
+                setSnackBarMessage("Post created successfully");
+                setTimeout(() => {
+                    setSnackBarVisible(false);
+                    navigate.navigate('BottomTab', { screen: 'AccountScreen' });
+                    setSnackBarMessage("");
+                }, 1500);
+            } else {
+                setSnackBarVisible(true);
+                setSnackBarMessage("Failed to create post");
+            }
+        } catch (err) {
             setSnackBarVisible(true);
-            setSnackBarMessage("Post created successfully");
-            setTimeout(() => {
-                setSnackBarVisible(false);
-                navigate.navigate('BottomTab', { screen: 'AccountScreen' });
-                setSnackBarMessage("");
-            }, 1500);
+            setSnackBarMessage("An error occurred");
+            console.error(err);
         }
     };
 

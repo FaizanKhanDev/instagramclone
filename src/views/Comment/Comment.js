@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SnackBar from '../../components/common/SnackBar';
-
 import {
   Image,
   Text,
@@ -10,6 +9,7 @@ import {
   View,
   Keyboard,
   Platform,
+  ScrollView,
   KeyboardAvoidingView,
   StyleSheet,
 } from 'react-native';
@@ -17,10 +17,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Container from '../../components/Container/Container';
-import data from '../../storage/database/comment';
 import styles from './Comment.style';
 import { useCommentPostMutation } from '../../redux/services/post';
 import { useSelector } from 'react-redux';
+
 const Comment = ({ navigation, route }) => {
   const user = useSelector((state) => state.auth.user);
   const [commentText, setCommentText] = useState('');
@@ -28,15 +28,17 @@ const Comment = ({ navigation, route }) => {
   const [like, setLike] = useState(false);
   const [commentPost, { isLoading, data: comment }] = useCommentPostMutation();
   const [commentsList, setCommentsList] = useState([]);
+  const [newCommentId, setNewCommentId] = useState(null);
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     if (route.params) {
       setCommentsList(route.params.commentList);
     }
   }, [route.params]);
-  /* -------------- SnackBar --------------- */
-  const [snackBarVisible, setSnackBarVisible] = React.useState(false);
-  const [snackBarMessage, setSnackBarMessage] = React.useState('');
+
+  const [snackBarVisible, setSnackBarVisible] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState('');
   const dismissSnackBar = () => {
     setSnackBarVisible(false);
   };
@@ -45,39 +47,40 @@ const Comment = ({ navigation, route }) => {
     let payload = {
       postId: route.params.postId,
       comment: commentText,
-      token: route.params.token
-    }
+      token: route.params.token,
+    };
 
     let response = await commentPost(payload);
-    if (response.data.status == "success") {
+    if (response.data.status === 'success') {
       let newComments = {
         ...response.data.data,
-        user:user
-      }
-      console.log("New Comments: user ", JSON.stringify(user));
+        user: user,
+      };
+
       setCommentsList([...commentsList, newComments]);
-      setCommentText("");
+      setCommentText('');
       setSnackBarVisible(true);
-      setSnackBarMessage("Comment added successfully");
+      setSnackBarMessage('Comment added successfully');
+      setNewCommentId(newComments.id);
+      Keyboard.dismiss(); // Dismiss the keyboard
+      // scrollViewRef.current.scrollToEnd({ animated: true, duration: 300 }); // Scroll to the bottom
       setTimeout(() => {
         setSnackBarVisible(false);
-        setSnackBarMessage("");
-      }, 1000)
+        setSnackBarMessage('');
+      }, 1000);
     }
-  }
-
-
+  };
 
   const handleLike = () => {
     setLike(!like);
   };
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
       setKeyboardHeight(40);
     });
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardHeight(0);
-
     });
 
     return () => {
@@ -93,11 +96,7 @@ const Comment = ({ navigation, route }) => {
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            enableOnAndroid
-            keyboardShouldPersistTaps='handled'
-          >
+
             <View style={styles.topContainer}>
               <View style={styles.top}>
                 <View style={styles.left}>
@@ -107,42 +106,44 @@ const Comment = ({ navigation, route }) => {
                   <Text style={styles.label}> Comments</Text>
                 </View>
               </View>
-
-
-              <View style={styles.line} />
-              {commentsList.map((item, index) => (
-                <View
-                  key={index}
-                  style={{ justifyContent: 'space-between', flexDirection: 'row' }}
-                >
-                  <View style={styles.comment}>
-                    <Image style={styles.images} source={require('../../../assets/images/profil.jpg')} />
-                    <View style={{ marginLeft: 10 }}>
-                      <Text style={{ color: '#414a4c', fontWeight: 'bold', fontSize: 13 }}>
-                        {item?.user?.username}
-                      </Text>
-                      <Text style={{ color: '#414a4c', marginTop: 5, fontSize: 15 }}>
-                        {item.content}
-                      </Text>
-                      <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                        <Text style={styles.answer}>Reply</Text>
-                      </View>
+            </View>
+          <ScrollView style={styles.contentView} ref={scrollViewRef}>
+            <View style={styles.line} />
+            {commentsList.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  { justifyContent: 'space-between', flexDirection: 'row' },
+                  item.id === newCommentId && { backgroundColor: '#f0fff4' }, // Highlight new comment
+                ]}
+              >
+                <View style={styles.comment}>
+                  <Image style={styles.images} source={require('../../../assets/images/profil.jpg')} />
+                  <View style={{ marginLeft: 10 }}>
+                    <Text style={{ color: '#414a4c', fontWeight: 'bold', fontSize: 13 }}>
+                      {item?.user?.username}
+                    </Text>
+                    <Text style={{ color: '#414a4c', marginTop: 5, fontSize: 15 }}>
+                      {item.content}
+                    </Text>
+                    <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                      <Text style={styles.answer}>Reply</Text>
                     </View>
                   </View>
-
-                  <View style={{ marginTop: 10, alignItems: 'center', marginRight: 20 }}>
-                    <TouchableOpacity onPress={handleLike}>
-                      <AntDesign
-                        name={like ? 'heart' : 'hearto'}
-                        size={20}
-                        color={like ? 'red' : '#3b444b'}
-                      />
-                    </TouchableOpacity>
-                  </View>
                 </View>
-              ))}
-            </View>
-          </KeyboardAwareScrollView>
+
+                <View style={{ marginTop: 10, alignItems: 'center', marginRight: 20 }}>
+                  <TouchableOpacity onPress={handleLike}>
+                    <AntDesign
+                      name={like ? 'heart' : 'hearto'}
+                      size={20}
+                      color={like ? 'red' : '#3b444b'}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
 
           <View style={[styles.bottom, { marginBottom: keyboardHeight }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -159,7 +160,7 @@ const Comment = ({ navigation, route }) => {
               />
             </View>
             <View>
-              <TouchableOpacity onPress={() => commentPostHandler()}>
+              <TouchableOpacity onPress={commentPostHandler}>
                 <Feather
                   name="send"
                   size={24}
@@ -174,8 +175,8 @@ const Comment = ({ navigation, route }) => {
       <SnackBar
         visible={snackBarVisible}
         snackBarMessage={snackBarMessage}
-        onDismissSnackBar={dismissSnackBar}></SnackBar>
-
+        onDismissSnackBar={dismissSnackBar}
+      />
     </Container>
   );
 };

@@ -21,7 +21,7 @@ const ProfileBar = () => {
   const bottomSheet2 = useRef();
   const navigation = useNavigation();
 
-  const [uploadFile, { data, loading }] = useUploadFileMutation();
+  const [uploadFile, { data, error, loading }] = useUploadFileMutation();
 
 
 
@@ -36,11 +36,16 @@ const ProfileBar = () => {
     }).then(async image => {
       console.log('Selected image:', image);
       let formData = new FormData();
-      formData.append('files', image);
+      formData.append('file', image);
       navigation.navigate('CreatePost', { selectedImage: image });
     }).catch(error => {
       console.log('ImagePicker Error: ', error);
     });
+  };
+  const showCurrentBottomSheet = () => {
+    // bottomSheet.current.snapTo(0);
+    console.log("bottomSheet2: ", bottomSheet2.current);
+    bottomSheet2.current.show()
   };
 
   return (
@@ -55,7 +60,7 @@ const ProfileBar = () => {
       </View>
 
       <View style={styles.right}>
-        <TouchableOpacity onPress={() => bottomSheet2.current.show()}>
+        <TouchableOpacity onPress={() => showCurrentBottomSheet()}>
           <FontAwesome
             name="plus-square-o"
             size={28}

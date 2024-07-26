@@ -14,6 +14,7 @@ export default StyleSheet.create({
   },
   topContainer: {
     marginTop: 5,
+    marginBottom: 5,
   },
   top: {
     flexDirection: 'row',
@@ -71,5 +72,18 @@ export default StyleSheet.create({
     marginLeft: 15,
     width: '65%',
     color: 'white',
+  },
+  contentView: {
+    flexGrow: 1,
+    marginTop: 5,
+    marginBottom: 50,
+  
+  },
+
+  newMessage: {
+    backgroundColor: '#FFD700',
+    padding: 10,
+ 
+
   },
 });

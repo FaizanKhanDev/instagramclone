@@ -27,17 +27,17 @@ const Account = ({ route }) => {
           <Highlighs />
           <View style={styles.hr} />
         </View>
-        <View style={styles.tabNavigatorContainer}>
-          <TopTabNavigator scrollY={scrollY} />
-        </View>
       </Animated.ScrollView>
+        <View style={styles.tabNavigatorContainer}>
+          <TopTabNavigator scrollY={scrollY}  />
+        </View>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
   tabNavigatorContainer: {
-    height: 1200,
+    height: 300,
   },
   hr: {
     borderBottomColor: '#3b444b', 

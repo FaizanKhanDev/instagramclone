@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View, StyleSheet, ActivityIndicator } from 'react-native';
 import Container from '../../components/Container/Container';
 import { useGetAllPostMutation } from '../../redux/services/post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -54,31 +54,38 @@ const ProfilPost = ({ navigation }) => {
 
   return (
     <Container>
-      <View style={styles.imageRow}>
-        {posts?.data && posts.data.length > 0 ? (
-          posts.data.map(post => post.images && post.images.map(image => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('SinglePost', { postId: post.id })}
-              key={image.id}
-              style={styles.imageContainer}
-            >
-              <Image style={styles.image} source={{ uri: image.url }} />
-            </TouchableOpacity>
-          )))
-        ) : (
-          <View style={styles.centered}>
-            <Text style={styles.noPostsText}>No posts available.</Text>
-          </View>
-        )}
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.imageRow}>
+          {posts?.data && posts.data.length > 0 ? (
+            posts.data.map(post => post.images && post.images.map(image => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SinglePost', { postId: post.id })}
+                key={image.id}
+                style={styles.imageContainer}
+              >
+                <Image style={styles.image} source={{ uri: image.url }} />
+              </TouchableOpacity>
+            )))
+          ) : (
+            <View style={styles.centered}>
+              <Text style={styles.noPostsText}>No posts available.</Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </Container>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   imageRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   image: {
     width: '100%',
